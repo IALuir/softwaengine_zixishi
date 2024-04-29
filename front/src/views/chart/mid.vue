@@ -6,25 +6,7 @@
 </template>
 
 <script lang="ts">
-import { Config, PixelStreaming } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.3';
-import { Application, PixelStreamingApplicationStyle } from '@epicgames-ps/lib-pixelstreamingfrontend-ui-ue5.3';
-export let pixelStreaming
-document.body.onload = function() {
-  const config = new Config({
-    initialSettings: {
-      AutoPlayVideo: true,
-      AutoConnect: true,
-      ss: "ws://10.246.56.163:80",
-      StartVideoMuted: true,
-      WaitForStreamer: true,
-      KeyboardInput:false,
-      MouseInput:false,
-      HoveringMouseMode:true,
-      StreamerId:"Editor"
-    }
-  });
-  pixelStreaming = new PixelStreaming(config, { videoElementParent: document.getElementById("midbox")});
-}
+
 export default {
   data(){
     return{
