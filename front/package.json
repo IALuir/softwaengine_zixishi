@@ -1,0 +1,55 @@
+{
+  "name": "ruoyi",
+  "version": "3.8.7",
+  "description": "若依管理系统",
+  "author": "若依",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build:prod": "vite build",
+    "build:stage": "vite build --mode staging",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/y_project/RuoYi-Vue.git"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "2.3.1",
+    "@epicgames-ps/lib-pixelstreamingfrontend-ue5.3": "^1.0.3",
+    "@epicgames-ps/lib-pixelstreamingfrontend-ui-ue5.3": "^1.0.3",
+    "@vue/reactivity": "^3.4.21",
+    "@vueup/vue-quill": "1.2.0",
+    "@vueuse/core": "10.6.1",
+    "axios": "0.27.2",
+    "echarts": "^5.5.0",
+    "element-plus": "2.4.3",
+    "file-saver": "2.0.5",
+    "fuse.js": "6.6.2",
+    "js-cookie": "3.0.5",
+    "jsencrypt": "3.3.2",
+    "mapvgl": "^1.0.0-beta.189",
+    "nprogress": "0.2.0",
+    "pinia": "2.1.7",
+    "vue": "3.3.9",
+    "vue-baidu-map-3x": "^1.0.35",
+    "vue-bmap-gl": "^1.0.4",
+    "vue-cropper": "1.1.1",
+    "vue-iframe": "^0.0.0",
+    "vue-mapvgl": "^1.0.4",
+    "vue-router": "4.2.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "4.5.0",
+    "@vue/compiler-sfc": "3.3.9",
+    "@vuemap/unplugin-resolver": "^2.0.0",
+    "sass": "1.69.5",
+    "unplugin-auto-import": "^0.17.1",
+    "unplugin-vue-components": "^0.26.0",
+    "unplugin-vue-setup-extend-plus": "1.0.0",
+    "vite": "5.0.4",
+    "vite-plugin-compression": "0.5.1",
+    "vite-plugin-svg-icons": "2.0.1"
+  }
+}
