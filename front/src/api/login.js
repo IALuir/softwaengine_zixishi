@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import {parseStrEmpty} from "@/utils/ruoyi.js";
 
 // 登录方法
 export function login(username, password, code, uuid) {
@@ -27,6 +28,21 @@ export function register(data) {
       isToken: false
     },
     method: 'post',
+    data: data
+  })
+}
+
+export function getUserByName(userName) {
+  return request({
+    url: '/register/' + parseStrEmpty(userName),
+    method: 'get'
+  })
+}
+
+export function updateUserafter(data) {
+  return request({
+    url: '/register/update',
+    method: 'put',
     data: data
   })
 }

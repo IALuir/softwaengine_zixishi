@@ -36,11 +36,6 @@ export const constantRoutes = [
         component: () => import('@/views/redirect/index.vue')
       }
     ]
-  },{
-    path: '/player',
-    name:'player',
-    component: () => import('@/views/chart/mid.vue'),
-    hidden: true
   },
   {
     path: '/login',
@@ -71,7 +66,7 @@ export const constantRoutes = [
         path: '/index',
         component: () => import('@/views/index'),
         name: 'Index',
-        meta: { title: '可视化', icon: 'dashboard', affix: true }
+        meta: { title: '主页', icon: 'dashboard', affix: true }
       }
     ]
   },

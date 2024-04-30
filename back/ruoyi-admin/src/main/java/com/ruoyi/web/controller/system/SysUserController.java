@@ -34,7 +34,7 @@ import com.ruoyi.system.service.ISysUserService;
 
 /**
  * 用户信息
- * 
+ *
  * @author ruoyi
  */
 @RestController
@@ -115,6 +115,7 @@ public class SysUserController extends BaseController
         }
         return ajax;
     }
+
 
     /**
      * 新增用户
