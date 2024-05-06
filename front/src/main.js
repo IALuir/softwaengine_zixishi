@@ -44,10 +44,6 @@ import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
 
-import BaiduMap from 'vue-baidu-map-3x'
-import 'vue-bmap-gl/dist/style.css'
-import VueMapvgl from 'vue-mapvgl'
-import VueBMap, {initBMapApiLoader} from 'vue-bmap-gl';
 
 
 
@@ -83,16 +79,7 @@ app.component('svg-icon', SvgIcon)
 
 directive(app)
 
-app.use(BaiduMap, {
-  ak: 'QMKG5IXjkHuHr0MoOlHToCGfXZl2Lx7l',
-  type: 'WebGL'
-});
 
-initBMapApiLoader({
-  ak: 'QMKG5IXjkHuHr0MoOlHToCGfXZl2Lx7l'
-})
-app.use(VueBMap)
-app.use(VueMapvgl)
 // 使用element-plus 并且设置全局的大小
 app.use(ElementPlus, {
   locale: locale,

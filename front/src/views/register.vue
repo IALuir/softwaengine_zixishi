@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <el-form ref="registerRef" :model="registerForm" :rules="registerRules" class="register-form">
-      <h3 class="title">分质分流数字孪生系统</h3>
+      <h3 class="title">自习室管理系统</h3>
       <el-form-item prop="username">
         <el-input
           v-model="registerForm.username"
@@ -77,17 +77,29 @@
 
 <script setup>
 import { ElMessageBox } from "element-plus";
-import { getCodeImg, register } from "@/api/login";
+import {getCodeImg, register, updateUserafter} from "@/api/login";
+import {getUser, updateUser} from "@/api/system/user.js";
+import {getUserByName} from "@/api/login.js";
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 const registerForm = ref({
-  username: "",
-  password: "",
   confirmPassword: "",
   code: "",
-  uuid: ""
+  uuid: "",
+  userId: undefined,
+  deptId: undefined,
+  username: undefined,
+  nickName: undefined,
+  password: undefined,
+  phonenumber: undefined,
+  email: undefined,
+  sex: undefined,
+  status: "0",
+  remark: undefined,
+  postIds: [201],
+  roleIds: [2]
 });
 
 const equalToPassword = (rule, value, callback) => {
@@ -117,7 +129,6 @@ const registerRules = {
 const codeUrl = ref("");
 const loading = ref(false);
 const captchaEnabled = ref(true);
-
 function handleRegister() {
   proxy.$refs.registerRef.validate(valid => {
     if (valid) {
@@ -128,6 +139,7 @@ function handleRegister() {
           dangerouslyUseHTMLString: true,
           type: "success",
         }).then(() => {
+          getUserByName(registerForm.value.username).then(res => {}).catch(() => {});
           router.push("/login");
         }).catch(() => {});
       }).catch(() => {
