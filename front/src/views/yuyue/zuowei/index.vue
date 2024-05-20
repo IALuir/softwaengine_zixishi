@@ -13,7 +13,7 @@
         </el-option>
       </el-option-group>
     </el-select>
-    <el-carousel ref="rooms" indicator-position="outside" :autoplay="false" id="mainbox" height="1050px" arrow="hover" @change="chushihua">
+    <el-carousel ref="rooms" indicator-position="outside" :autoplay="false" id="mainbox" height="1050px" arrow="never" @change="chushihua">
       <el-carousel-item v-for="it in rooms" :key="rooms" :name="it" style="height: 100%">
         <p id="title">{{it}}</p>
         <img src="../zixishi01.png" height="1000" width="1100" id="img"/>
@@ -134,12 +134,19 @@ export default {
       this.$refs.rooms.setActiveItem(e)
     },
     zuoweiclick(e){
+      this.chushihua();
       let target = document.getElementById(e.currentTarget.id);
-      target.className = "el-button el-button--success el-button--default zuoweibutton"
-      console.log(e.currentTarget.id)
+      if(target.className == "el-button el-button--primary el-button--default zuoweibutton"){
+        target.className = "el-button el-button--success el-button--default zuoweibutton"
+      }else{
+        target.className = "el-button el-button--primary el-button--default zuoweibutton"
+      }
     },
     chushihua(e){
-
+      let buttons = document.getElementsByClassName("el-button el-button--success el-button--default zuoweibutton")
+      for(let i = 0;i < buttons.length;i++){
+        buttons[i].className = "el-button el-button--primary el-button--default zuoweibutton"
+      }
     }
   },
   watch: {
