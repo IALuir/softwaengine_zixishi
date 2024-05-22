@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysYuyueMapper">
+
+    <resultMap type="SysYuyue" id="SysYuyueResult">
+        <id     property="yuyueId"             column="yuyue_id"               />
+        <result property="userName"           column="user_name"             />
+        <result property="zuowei"            column="zuowei"              />
+        <result property="yuyueTime"           column="yuyueTime"             />
+        <result property="cTime"          column="cTime"            />
+    </resultMap>
+
+    <sql id="selectYuyueVo">
+        select distinct y.yuyue_id,y.user_id,y.zuowei,y.yuyueTime,y.cTime,u.user_name,u.email,u.phonenumber
+        from sys_yuyue y
+                 left join sys_user u on u.user_id = y.user_id
+    </sql>
+
+    <select id="selectYuyueList" parameterType="SysYuyue" resultMap="SysYuyueResult">
+        <include refid="selectYuyueVo"/>
+    </select>
+
+    <select id="selectYuyueByYuyueId" parameterType="SysYuyue" resultMap="SysYuyueResult">
+        <include refid="selectYuyueVo"/>
+        where y.yuyue_id = #{yuyueId}
+    </select>
+
+
+
+</mapper>
