@@ -39,3 +39,27 @@ export function addYuyue(data) {
         data: data
     })
 }
+
+// 查询座位信息
+export function getZuoweiByZuoweiId(zuoweiId) {
+    return request({
+        url: '/yuyue/zuowei/shenqing/' + zuoweiId,
+        method: 'get'
+    })
+}
+
+// 根据座位查询预约信息
+export function getYuyueByZuoweiId(zuoweiId) {
+    return request({
+        url: '/yuyue/zuowei/ybz/' + zuoweiId,
+        method: 'get'
+    })
+}
+
+// 查询用户预约数量
+export function getYuyueNumberByUserId(userId) {
+    return request({
+        url: '/yuyue/zuowei/ynbu/' + userId,
+        method: 'get'
+    })
+}

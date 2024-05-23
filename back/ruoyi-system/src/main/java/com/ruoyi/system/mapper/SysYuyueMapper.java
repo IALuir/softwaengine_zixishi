@@ -2,11 +2,18 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysYuyue;
+import com.ruoyi.system.domain.SysZuowei;
 
 public interface SysYuyueMapper {
     public List<SysYuyue> selectYuyueList(SysYuyue Yuyue);
 
     public List<SysYuyue> selectYuyueByYuyueId(Long yuyueId);
+
+    public List<SysZuowei> selectZuoweiByZuoweiId(String zuoweiId);
+
+    public List<SysYuyue> selectYuyueByZuoweiId(String zuoweiId);
+
+    public List<SysYuyue> selectYuyueNumberByUserId(Long userId);
 
     public int insertYuyue(SysYuyue Yuyue);
 

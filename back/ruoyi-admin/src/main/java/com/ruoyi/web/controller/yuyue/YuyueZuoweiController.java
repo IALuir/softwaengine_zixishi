@@ -53,6 +53,31 @@ public class YuyueZuoweiController extends BaseController{
     }
 
     /**
+     * 根据座位编号获取详细信息
+     */
+    @GetMapping(value = "shenqing/{zuoweiId}")
+    public AjaxResult getInfoByZuoweiId(@PathVariable String zuoweiId)
+    {
+        return success(yuyueService.selectZuoweiByZuoweiId(zuoweiId));
+    }
+    /**
+     * 根据座位号查预约记录
+     */
+    @GetMapping(value = "ybz/{zuoweiId}")
+    public AjaxResult getYuyueByZuoweiId(@PathVariable String zuoweiId)
+    {
+        return success(yuyueService.selectYuyueByZuoweiId(zuoweiId));
+    }
+    /**
+     * 根据用户查预约记录
+     */
+    @GetMapping(value = "ynbu/{userId}")
+    public AjaxResult getYuyueNumberByUserId(@PathVariable Long userId)
+    {
+        return success(yuyueService.selectYuyueNumberByUserId(userId));
+    }
+
+    /**
      * 删除预约记录
      */
     @Log(title = "预约管理", businessType = BusinessType.DELETE)

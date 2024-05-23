@@ -8,14 +8,28 @@
         <id     property="yuyueId"             column="yuyue_id"               />
         <result property="userId"           column="user_id"             />
         <result property="userName"           column="user_name"             />
-        <result property="zuowei"            column="zuowei"              />
+        <result property="zuoweiId"            column="zuowei_id"              />
         <result property="yuyueTime"           column="yuyueTime"             />
         <result property="cTime"          column="cTime"            />
     </resultMap>
 
+    <resultMap type="SysZuowei" id="SysZuoweiResult">
+        <id     property="zuoweiId"             column="zuowei_id"               />
+        <result property="yuyueId"           column="yuyue_id"             />
+        <result property="zuoweiYuyueNumber"           column="zuowei_number"             />
+        <result property="zuoweiState"            column="zuowei_state"              />
+    </resultMap>
+
     <sql id="selectYuyueVo">
-        select distinct y.yuyue_id,y.user_id,y.zuowei,y.yuyueTime,y.cTime,y.is_del,u.user_name,u.email,u.phonenumber
+        select distinct y.yuyue_id,y.user_id,y.zuowei_id,y.yuyueTime,y.cTime,y.is_del,u.user_name,u.email,u.phonenumber
         from sys_yuyue y
+                 left join sys_user u on u.user_id = y.user_id
+    </sql>
+
+    <sql id="selectZuoweiVo">
+        select distinct z.zuowei_id,z.zuowei_number,z.zuowei_state,y.yuyueTime,y.cTime,u.user_name,u.email,u.phonenumber
+        from sys_zuowei z
+                 left join sys_yuyue y on y.zuowei_id = z.zuowei_id
                  left join sys_user u on u.user_id = y.user_id
     </sql>
 
@@ -35,6 +49,23 @@
         where y.yuyue_id = #{yuyueId}
     </select>
 
+    <select id="selectYuyueByZuoweiId" parameterType="SysYuyue" resultMap="SysYuyueResult">
+        <include refid="selectYuyueVo"/>
+        where y.zuowei_id = #{zuoweiId}
+    </select>
+
+    <select id="selectZuoweiByZuoweiId" parameterType="SysZuowei" resultMap="SysZuoweiResult">
+        <include refid="selectZuoweiVo"/>
+        where z.zuowei_id = #{zuoweiId}
+    </select>
+
+    <select id="selectYuyueNumberByUserId" parameterType="SysYuyue" resultMap="SysYuyueResult">
+        select *
+            from sys_yuyue y
+            left join sys_user u on u.user_id = y.user_id
+            where y.user_id = #{userId}
+    </select>
+
 
     <update id="updatetYuyue" parameterType="SysYuyue">
         update sys_yuyue
@@ -49,14 +80,14 @@
     <insert id="insertYuyue" parameterType="SysYuyue" useGeneratedKeys="true" keyProperty="yuyueId">
         insert into sys_yuyue(
         user_id,
-        zuowei,
+        zuowei_id,
         yuyueTime,
         cTime
         )values(
         #{userId},
-        #{zuowei},
+        #{zuoweiId},
         #{yuyueTime},
-        #{cTime}
+        sysdate()
         )
     </insert>
 

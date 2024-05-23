@@ -25,7 +25,7 @@ public class SysYuyue extends BaseEntity{
 
     /** 座位 */
     @Excel(name = "预约座位")
-    private String zuowei;
+    private String zuoweiId;
 
     private String yuyueTime;
     private String cTime;
@@ -68,14 +68,14 @@ public class SysYuyue extends BaseEntity{
         this.userName = userName;
     }
 
-    public String getZuowei()
+    public String getZuoweiId()
     {
-        return zuowei;
+        return zuoweiId;
     }
 
-    public void setZuowei(String zuowei)
+    public void setZuoweiId(String zuoweiId)
     {
-        this.zuowei = zuowei;
+        this.zuoweiId = zuoweiId;
     }
 
     public String getYuyueTime() {return yuyueTime;}
