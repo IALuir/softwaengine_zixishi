@@ -6,6 +6,7 @@
 
     <resultMap type="SysYuyue" id="SysYuyueResult">
         <id     property="yuyueId"             column="yuyue_id"               />
+        <result property="userId"           column="user_id"             />
         <result property="userName"           column="user_name"             />
         <result property="zuowei"            column="zuowei"              />
         <result property="yuyueTime"           column="yuyueTime"             />
@@ -13,13 +14,20 @@
     </resultMap>
 
     <sql id="selectYuyueVo">
-        select distinct y.yuyue_id,y.user_id,y.zuowei,y.yuyueTime,y.cTime,u.user_name,u.email,u.phonenumber
+        select distinct y.yuyue_id,y.user_id,y.zuowei,y.yuyueTime,y.cTime,y.is_del,u.user_name,u.email,u.phonenumber
         from sys_yuyue y
                  left join sys_user u on u.user_id = y.user_id
     </sql>
 
     <select id="selectYuyueList" parameterType="SysYuyue" resultMap="SysYuyueResult">
         <include refid="selectYuyueVo"/>
+        WHERE y.is_del != 1 AND y.user_id = #{userId}
+        <if test="yuyueLeftTime != null and yuyueRightTime != null">
+            AND y.yuyueTime > #{yuyueLeftTime} AND #{yuyueRightTime} > y.yuyueTime
+        </if>
+        <if test="cLeftTime != null and cRightTime != null">
+            AND y.cTime > #{cLeftTime} AND #{cRightTime} > y.cTime
+        </if>
     </select>
 
     <select id="selectYuyueByYuyueId" parameterType="SysYuyue" resultMap="SysYuyueResult">
@@ -27,6 +35,37 @@
         where y.yuyue_id = #{yuyueId}
     </select>
 
+
+    <update id="updatetYuyue" parameterType="SysYuyue">
+        update sys_yuyue
+        <set>
+            zuowei = #{zuowei},
+            yuyueTime = #{yuyueTime},
+            cTime = #{cTime}
+        </set>
+        where sys_yuyue.yuyue_id = #{yuyueId}
+    </update>
+
+    <insert id="insertYuyue" parameterType="SysYuyue" useGeneratedKeys="true" keyProperty="yuyueId">
+        insert into sys_yuyue(
+        user_id,
+        zuowei,
+        yuyueTime,
+        cTime
+        )values(
+        #{userId},
+        #{zuowei},
+        #{yuyueTime},
+        #{cTime}
+        )
+    </insert>
+
+    <delete id="deleteYuyueByYuyueIds" parameterType="Long">
+        update sys_yuyue set is_del = '1' where yuyue_id in
+        <foreach collection="array" item="yuyueId" open="(" separator="," close=")">
+            #{yuyueId}
+        </foreach>
+    </delete>
 
 
 </mapper>
