@@ -1,15 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" v-show="showSearch" :inline="true" label-width="68px">
-      <el-form-item label="用户名称" prop="roleName">
-        <el-input
-            v-model="queryParams.roleName"
-            placeholder="请输入用户名称"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="预约时间" style="width: 308px">
         <el-date-picker
             v-model="dateRange1"
@@ -36,7 +27,7 @@
       </el-form-item>
     </el-form>
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      <el-col :span="1.5" v-if="0">
         <el-button
             type="primary"
             plain
@@ -117,10 +108,28 @@
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="yuyueRef" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="用户名称" prop="userName">
-          <el-input v-model="form.userName" placeholder="请输入名称" />
+          <p style="text-align: center;margin: 0;padding: 0;padding-left:10px">{{form.userName}}</p>
         </el-form-item>
         <el-form-item label="预约座位" prop="zuowei">
-          <el-input v-model="form.zuowei" placeholder="请输入名称" />
+          <el-input v-model="form.zuowei" placeholder="请输入座位" />
+        </el-form-item>
+        <el-form-item label="预约时间">
+          <el-col :span="11">
+            <el-date-picker value-format="YYYY-MM-DD" type="date" placeholder="选择日期" v-model="form.yuyueDate" style="width: 100%;"></el-date-picker>
+          </el-col>
+          <el-col class="line" :span="2">-</el-col>
+          <el-col :span="11">
+            <el-time-picker value-format="YYYY-MM-DD hh:mm:ss" placeholder="选择时间" v-model="form.yuyueTime" style="width: 100%;"></el-time-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-col :span="11">
+            <el-date-picker value-format="YYYY-MM-DD" type="date" placeholder="选择日期" v-model="form.cDate" style="width: 100%;"></el-date-picker>
+          </el-col>
+          <el-col class="line" :span="2">-</el-col>
+          <el-col :span="11">
+            <el-time-picker value-format="YYYY-MM-DD hh:mm:ss" placeholder="选择时间" v-model="form.cTime" style="width: 100%;"></el-time-picker>
+          </el-col>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -135,9 +144,8 @@
 </template>
 
 <script setup>
-import { roleMenuTreeselect, treeselect as menuTreeselect } from "@/api/system/menu.js";
 import {addYuyue, delYuyue, getYuyueByyuyueId, getYuyueList, updateYuyue} from "@/api/yuyuezuowei/yuyuezuowei.js";
-
+import store from "@/store";
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -171,11 +179,22 @@ const data = reactive({
     pageSize: 10,
     yuyueId: undefined,
     userName: undefined,
-    yuyuezuowei: undefined
+    zuowei: undefined,
+    cTime: undefined,
+    yuyueTime: undefined,
+    cDate: undefined,
+    yuyueDate: undefined,
+    cLeftTime:undefined,
+    cRightTime:undefined,
+    yuyueLeftTime:undefined,
+    yuyueRightTime:undefined
   },
   rules: {
-    userName: [{ required: true, message: "名称不能为空", trigger: "blur" }],
-    yuyuezuowei: [{ required: true, message: "预约座位不能为空", trigger: "blur" }]
+    zuowei: [{ required: true, message: "预约座位不能为空", trigger: "blur" }],
+    yuyueDate: [{ required: true, message: "预约日期不能为空", trigger: "blur" }],
+    yuyueTime: [{ required: true, message: "预约时间不能为空", trigger: "blur" }],
+    cDate: [{ required: true, message: "创建日期不能为空", trigger: "blur" }],
+    cTime: [{ required: true, message: "创建时间不能为空", trigger: "blur" }]
   },
 });
 
@@ -184,7 +203,13 @@ const { queryParams, form, rules } = toRefs(data);
 /** 查询角色列表 */
 function getList() {
   loading.value = true;
-  getYuyueList().then(response => {
+  let tempTime = {};
+  tempTime.cLeftTime = dateRange.value[0];
+  tempTime.cRightTime = dateRange.value[1];
+  tempTime.yuyueLeftTime = dateRange1.value[0];
+  tempTime.yuyueRightTime = dateRange1.value[1];
+  tempTime.userId = store.state.value.user.id;
+  getYuyueList(tempTime).then(response => {
     yuyueList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -237,10 +262,13 @@ function reset() {
   deptNodeAll.value = false;
   form.value = {
     yuyueId: undefined,
+    userId: undefined,
     userName: undefined,
     zuowei: undefined,
     cTime: undefined,
-    yuyueTime: undefined
+    yuyueTime: undefined,
+    cDate: undefined,
+    yuyueDate: undefined
   };
   proxy.resetForm("yuyueRef");
 }
@@ -256,6 +284,8 @@ function handleUpdate(row) {
   const yuyueId = row.yuyueId || ids.value;
   getYuyueByyuyueId(yuyueId).then(response => {
     form.value = response.data[0];
+    form.value.yuyueDate = response.data[0].yuyueTime.split(" ")[0];
+    form.value.cDate = response.data[0].cTime.split(" ")[0];
     open.value = true;
     title.value = "修改预约";
   });
@@ -265,15 +295,15 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["yuyueRef"].validate(valid => {
     if (valid) {
+      form.value.yuyueTime = form.value.yuyueDate + ' ' + form.value.yuyueTime.split(" ")[1]
+      form.value.cTime = form.value.cDate + ' ' + form.value.cTime.split(" ")[1]
       if (form.value.yuyueId != undefined) {
-        form.value.menuIds = getMenuAllCheckedKeys();
         updateYuyue(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
         });
       } else {
-        form.value.menuIds = getMenuAllCheckedKeys();
         addYuyue(form.value).then(response => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;
@@ -288,7 +318,6 @@ function cancel() {
   open.value = false;
   reset();
 }
-
 
 getList();
 </script>

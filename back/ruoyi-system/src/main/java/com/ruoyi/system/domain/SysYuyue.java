@@ -1,11 +1,8 @@
 package com.ruoyi.system.domain;
 
-import java.util.Set;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -18,17 +15,28 @@ public class SysYuyue extends BaseEntity{
     @Excel(name = "预约记录序号")
     private Long yuyueId;
 
-    /** 用户ID */
+    /** 用户名称 */
     @Excel(name = "用户名称")
     private String userName;
 
     /** 用户ID */
+    @Excel(name = "用户ID")
+    private Long userId;
+
+    /** 座位 */
     @Excel(name = "预约座位")
     private String zuowei;
 
     private String yuyueTime;
-
     private String cTime;
+
+    private Date cLeftTime;
+
+    private Date cRightTime;
+
+    private Date yuyueLeftTime;
+
+    private Date yuyueRightTime;
 
     public Long getYuyueId()
     {
@@ -38,6 +46,16 @@ public class SysYuyue extends BaseEntity{
     public void setYuyueId(Long yuyueId)
     {
         this.yuyueId = yuyueId;
+    }
+
+    public Long getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId(Long userId)
+    {
+        this.userId = userId;
     }
 
     public String getuserName()
@@ -60,10 +78,7 @@ public class SysYuyue extends BaseEntity{
         this.zuowei = zuowei;
     }
 
-    public String getYuyueTime()
-    {
-        return yuyueTime;
-    }
+    public String getYuyueTime() {return yuyueTime;}
 
     public void setYuyueTime(String yuyueTime)
     {
@@ -78,6 +93,46 @@ public class SysYuyue extends BaseEntity{
     public void setcTime(String cTime)
     {
         this.cTime = cTime;
+    }
+
+    public Date getcLeftTime()
+    {
+        return cLeftTime;
+    }
+
+    public void setcLeftTime(Date cLeftTime)
+    {
+        this.cLeftTime = cLeftTime;
+    }
+
+    public Date getcRightTime()
+    {
+        return cRightTime;
+    }
+
+    public void setcRightTime(Date cRightTime)
+    {
+        this.cRightTime = cRightTime;
+    }
+
+    public Date getyuyueLeftTime()
+    {
+        return yuyueLeftTime;
+    }
+
+    public void setyuyueLeftTime(Date yuyueLeftTime)
+    {
+        this.yuyueLeftTime = yuyueLeftTime;
+    }
+
+    public Date getyuyueRightTime()
+    {
+        return yuyueRightTime;
+    }
+
+    public void setyuyueRightTime(Date yuyueRightTime)
+    {
+        this.yuyueRightTime = yuyueRightTime;
     }
 
 }

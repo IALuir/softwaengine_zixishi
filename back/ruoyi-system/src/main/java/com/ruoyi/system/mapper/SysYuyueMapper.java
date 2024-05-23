@@ -12,5 +12,5 @@ public interface SysYuyueMapper {
 
     public int updatetYuyue(SysYuyue Yuyue);
 
-    public int deleteYuyue(Long[] yuyueIds);
+    public int deleteYuyueByYuyueIds(Long[] yuyueIds);
 }

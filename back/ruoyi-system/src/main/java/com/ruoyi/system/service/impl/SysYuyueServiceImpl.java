@@ -36,6 +36,6 @@ public class SysYuyueServiceImpl implements ISysYuyueService{
 
     @Override
     public int deleteYuyueByIds(Long[] yuyueIds) {
-        return yuyueMapper.deleteYuyue(yuyueIds);
+        return yuyueMapper.deleteYuyueByYuyueIds(yuyueIds);
     }
 }
