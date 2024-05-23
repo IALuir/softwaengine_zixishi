@@ -73,7 +73,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="预约编号" prop="yuyueId" width="120" />
       <el-table-column label="用户名称" prop="userName" :show-overflow-tooltip="true" width="150" />
-      <el-table-column label="预约座位" prop="zuowei" width="120" />
+      <el-table-column label="预约座位" prop="zuoweiId" width="120" />
       <el-table-column label="预约时间" align="center" prop="yuyueTime">
         <template #default="scope">
           <span>{{ parseTime(scope.row.yuyueTime) }}</span>
@@ -110,8 +110,8 @@
         <el-form-item label="用户名称" prop="userName">
           <p style="text-align: center;margin: 0;padding: 0;padding-left:10px">{{form.userName}}</p>
         </el-form-item>
-        <el-form-item label="预约座位" prop="zuowei">
-          <el-input v-model="form.zuowei" placeholder="请输入座位" />
+        <el-form-item label="预约座位" prop="zuoweiId">
+          <el-input v-model="form.zuoweiId" placeholder="请输入座位" />
         </el-form-item>
         <el-form-item label="预约时间">
           <el-col :span="11">
@@ -264,7 +264,7 @@ function reset() {
     yuyueId: undefined,
     userId: undefined,
     userName: undefined,
-    zuowei: undefined,
+    zuoweiId: undefined,
     cTime: undefined,
     yuyueTime: undefined,
     cDate: undefined,

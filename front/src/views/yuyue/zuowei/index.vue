@@ -96,10 +96,51 @@
 
       </el-carousel-item>
     </el-carousel>
+
+    <!-- 添加或修改配置对话框 -->
+    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
+      <el-form ref="zuoweiRef" :model="form" :rules="rules" label-width="100px">
+        <el-form-item label="申请人">
+          <p style="text-align: center;margin: 0;padding: 0;padding-left:10px">{{form.userName}}</p>
+        </el-form-item>
+        <el-form-item label="预约座位">
+          <p style="text-align: center;margin: 0;padding: 0;padding-left:10px">{{form.zuoweiId}}</p>
+        </el-form-item>
+        <el-form-item label="预约时间" required>
+          <el-col :span="11">
+            <el-form-item prop="yuyueDate">
+              <el-date-picker value-format="YYYY-MM-DD" type="date" placeholder="选择日期" v-model="form.yuyueDate" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col class="line" :span="2">-</el-col>
+          <el-col :span="11">
+            <el-form-item prop="yuyueTime">
+              <el-time-picker value-format="YYYY-MM-DD hh:mm:ss" type="date" placeholder="选择时间" v-model="form.yuyueTime" style="width: 100%;"></el-time-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+
+import {
+  addYuyue,
+  getYuyueByZuoweiId,
+  getYuyueNumberByUserId,
+  getZuoweiByZuoweiId
+} from "@/api/yuyuezuowei/yuyuezuowei.js";
+import store from "@/store/index.js";
+import {getUser} from "@/api/system/user.js";
+import * as constants from "constants";
 
 export default {
   components: {
@@ -110,6 +151,9 @@ export default {
       rooms:["101","201"],
       buttonlist:["B1","B2","B3","B4","B5","B6"],
       value:"",
+      title:"",
+      form:{},
+      open:false,
       options: [{
         label: '一楼',
         options: [{
@@ -124,7 +168,15 @@ export default {
           label: '201'
           }
         ]
-      }]
+      }],
+      rules: {
+        yuyueDate: [
+          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+        ],
+        yuyueTime: [
+          { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+        ]
+      },
     }
   },
   mounted() {
@@ -136,6 +188,7 @@ export default {
     zuoweiclick(e){
       this.chushihua();
       let target = document.getElementById(e.currentTarget.id);
+      this.handleUpdate(e.currentTarget.id);
       if(target.className == "el-button el-button--primary el-button--default zuoweibutton"){
         target.className = "el-button el-button--success el-button--default zuoweibutton"
       }else{
@@ -147,6 +200,65 @@ export default {
       for(let i = 0;i < buttons.length;i++){
         buttons[i].className = "el-button el-button--primary el-button--default zuoweibutton"
       }
+    },
+    /** 重置新增的表单以及其他数据  */
+    reset() {
+      this.form = {
+        zuoweiId: undefined,
+        userId: undefined,
+        userName: undefined,
+        yuyueDate: undefined,
+        yuyueTime: undefined
+      };
+    },
+    /** 申请窗口 */
+    handleUpdate(id) {
+      this.reset();
+      getZuoweiByZuoweiId(id).then(response => {
+        this.form = response.data[0];
+        this.form.userId = store.state.value.user.id;
+        getUser(this.form.userId).then(response1 => {
+          this.form.userName = response1.data.userName;
+        })
+        this.open = true;
+        this.title = "预约";
+      });
+    },
+    /** 提交按钮 */
+    submitForm() {
+      if(this.form.yuyueTime && this.form.yuyueDate){
+        this.form.yuyueTime = this.form.yuyueDate + ' ' + this.form.yuyueTime.split(" ")[1]
+        let tempId = "";
+        let tempnum = 0;
+        getYuyueByZuoweiId(this.form.zuoweiId).then(res => {
+          tempId = res.data.length;
+        })
+        getYuyueNumberByUserId(this.form.userId).then(res => {
+          tempnum = res.data.length;
+
+        })
+        if(tempnum){
+          if(tempId){
+            addYuyue(this.form).then(response => {
+              this.$modal.msgSuccess("预约成功");
+              this.open = false;
+            })
+          }else{
+            this.$modal.msgError("预约失败，座位已经被预约");
+            this.open = false;
+          }
+        }else{
+          this.$modal.msgError("预约失败，已经有了一个预约");
+          this.open = false;
+        }
+      }else{
+        this.$modal.msgError("请选择时间");
+      }
+    },
+    /** 取消按钮 */
+    cancel() {
+      this.open = false;
+      this.reset();
     }
   },
   watch: {
