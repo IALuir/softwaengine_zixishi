@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.system.domain.SysYuyue;
+import com.ruoyi.system.domain.SysQiandao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -108,6 +109,38 @@ public class YuyueZuoweiController extends BaseController{
     public AjaxResult edit(@Validated @RequestBody SysYuyue yuyue)
     {
         return toAjax(yuyueService.updateYuyue(yuyue));
+    }
+
+    /**
+     * 新增签到记录
+     */
+
+    @Log(title = "签到管理", businessType = BusinessType.INSERT)
+    @PostMapping(value = "/qiandao")
+    public AjaxResult addqiandao(@Validated @RequestBody SysQiandao qiandao)
+    {
+        return toAjax(yuyueService.insertQiandao(qiandao));
+
+    }
+
+    /**
+     * 修改保存记录
+     */
+
+    @Log(title = "签到管理", businessType = BusinessType.UPDATE)
+    @PutMapping("/qiandao/")
+    public AjaxResult updateQiandao(@Validated @RequestBody SysQiandao qiandao)
+    {
+        return toAjax(yuyueService.updateQiandao(qiandao));
+    }
+
+    /**
+     * 根据预约编号获取签到信息
+     */
+    @GetMapping(value = "/qiandao/{yuyueId}")
+    public AjaxResult getQiandaoByyuyueId(@PathVariable Long yuyueId)
+    {
+        return success(yuyueService.selectQiandaoByYuyueId(yuyueId));
     }
 
 }
