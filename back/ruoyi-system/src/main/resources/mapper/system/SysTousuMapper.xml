@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysTousuMapper">
+
+    <resultMap type="SysTousu" id="SysTousuResult">
+        <id     property="tousuId"             column="tousu_id"               />
+        <result property="userId"           column="user_id"             />
+        <result property="tousuTitle"           column="tousu_title"             />
+        <result property="tousuType"            column="tousu_type"              />
+        <result property="tousuState"           column="tousu_state"             />
+        <result property="tousuCreatetime"           column="tousu_createtime"             />
+        <result property="tousuMain"          column="tousu_main"            />
+    </resultMap>
+
+    <sql id="selectTousuVo">
+        select distinct y.tousu_id,y.user_id,y.tousu_title,y.tousu_type,y.tousu_state,y.tousu_createtime,y.tousu_main,u.user_name,u.email,u.phonenumber
+        from sys_tousu y
+                 left join sys_user u on u.user_id = y.user_id
+    </sql>
+
+    <select id="selectTousuList" parameterType="SysTousu" resultMap="SysTousuResult">
+        <include refid="selectTousuVo"/>
+        WHERE  y.user_id = #{userId}
+    </select>
+
+</mapper>
