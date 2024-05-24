@@ -28,6 +28,9 @@ public class SysYuyue extends BaseEntity{
     private String zuoweiId;
 
     private String yuyueTime;
+
+    private String deTime;
+
     private String cTime;
 
     private Date cLeftTime;
@@ -83,6 +86,13 @@ public class SysYuyue extends BaseEntity{
     public void setYuyueTime(String yuyueTime)
     {
         this.yuyueTime = yuyueTime;
+    }
+
+    public String getDeTime() {return deTime;}
+
+    public void setDeTime(String deTime)
+    {
+        this.deTime = deTime;
     }
 
     public String getcTime()
