@@ -21,6 +21,14 @@
         <result property="zuoweiState"            column="zuowei_state"              />
     </resultMap>
 
+    <resultMap type="SysQiandao" id="SysQiandaoResult">
+        <id     property="qiandaoId"             column="qiandao_id"               />
+        <result property="yuyueId"           column="yuyue_id"             />
+        <result property="qiandaoTime"           column="qiandaoTime"             />
+        <result property="qiantuiTime"            column="qiantuiTime"              />
+        <result property="state"            column="state"              />
+    </resultMap>
+
     <sql id="selectYuyueVo">
         select distinct y.yuyue_id,y.user_id,y.zuowei_id,y.yuyueTime,y.deTime,y.cTime,y.is_del,u.user_name,u.email,u.phonenumber
         from sys_yuyue y
@@ -31,6 +39,13 @@
         select distinct z.zuowei_id,z.zuowei_number,z.zuowei_state,y.yuyueTime,y.deTime,y.cTime,u.user_name,u.email,u.phonenumber
         from sys_zuowei z
                  left join sys_yuyue y on y.zuowei_id = z.zuowei_id
+                 left join sys_user u on u.user_id = y.user_id
+    </sql>
+
+    <sql id="selectQiandaoiVo">
+        select distinct *
+        from sys_qiandao q
+                 left join sys_yuyue y on y.yuyue_id = q.yuyue_id
                  left join sys_user u on u.user_id = y.user_id
     </sql>
 
@@ -52,7 +67,7 @@
 
     <select id="selectYuyueByZuoweiId" parameterType="SysYuyue" resultMap="SysYuyueResult">
         <include refid="selectYuyueVo"/>
-        where y.zuowei_id = #{zuoweiId}
+        where y.zuowei_id = #{zuoweiId} AND y.is_del = 0
     </select>
 
     <select id="selectZuoweiByZuoweiId" parameterType="SysZuowei" resultMap="SysZuoweiResult">
@@ -64,7 +79,7 @@
         select *
             from sys_yuyue y
             left join sys_user u on u.user_id = y.user_id
-            where y.user_id = #{userId}
+            where y.user_id = #{userId} AND y.is_del = 0
     </select>
 
 
@@ -101,6 +116,36 @@
             #{yuyueId}
         </foreach>
     </delete>
+
+    <insert id="insertQiandao" parameterType="SysQiandao" useGeneratedKeys="true" keyProperty="qiandaoId">
+        insert into sys_qiandao(
+            yuyue_id,
+            qiandaoTime,
+            qiantuiTime,
+            state
+        )values(
+            #{yuyueId},
+            #{qiandaoTime},
+            #{qiantuiTime},
+            #{state}
+        )
+    </insert>
+
+    <select id="selectQiandaoByYuyueId" parameterType="SysQiandao" resultMap="SysQiandaoResult">
+        <include refid="selectQiandaoiVo"/>
+        where y.yuyue_id = #{yuyueId}
+    </select>
+
+    <update id="updatetQiandao" parameterType="SysQiandao">
+        update sys_qiandao
+        <set>
+            yuyue_id = #{yuyueId},
+            qiandaoTime = #{qiandaoTime},
+            qiantuiTime = #{qiantuiTime},
+            state = #{state}
+        </set>
+        where sys_qiandao.qiandao_id = #{qiandaoId}
+    </update>
 
 
 </mapper>

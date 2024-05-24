@@ -124,7 +124,7 @@
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="11">
-            <el-time-picker value-format="YYYY-MM-DD hh:mm:ss" placeholder="选择时间" v-model="form.yuyueTime" style="width: 100%;"></el-time-picker>
+            <el-time-picker value-format="YYYY-MM-DD HH:mm:ss" placeholder="选择时间" v-model="form.yuyueTime" style="width: 100%;"></el-time-picker>
           </el-col>
         </el-form-item>
         <el-form-item label="终止时间">
@@ -133,7 +133,7 @@
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="11">
-            <el-time-picker value-format="YYYY-MM-DD hh:mm:ss" placeholder="选择时间" v-model="form.deTime" style="width: 100%;"></el-time-picker>
+            <el-time-picker value-format="YYYY-MM-DD HH:mm:ss" placeholder="选择时间" v-model="form.deTime" style="width: 100%;"></el-time-picker>
           </el-col>
         </el-form-item>
         <el-form-item label="创建时间">
@@ -142,7 +142,7 @@
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="11">
-            <el-time-picker value-format="YYYY-MM-DD hh:mm:ss" placeholder="选择时间" v-model="form.cTime" style="width: 100%;"></el-time-picker>
+            <el-time-picker value-format="YYYY-MM-DD HH:mm:ss" placeholder="选择时间" v-model="form.cTime" style="width: 100%;"></el-time-picker>
           </el-col>
         </el-form-item>
       </el-form>
@@ -332,12 +332,6 @@ function submitForm() {
             proxy.$modal.msgError("该座位已被预约");
           }
         })
-      } else {
-        addYuyue(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
-          open.value = false;
-          getList();
-        });
       }
     }
   });

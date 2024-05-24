@@ -63,3 +63,28 @@ export function getYuyueNumberByUserId(userId) {
         method: 'get'
     })
 }
+
+export function addQiandao(data) {
+    return request({
+        url: '/yuyue/zuowei/qiandao',
+        method: 'post',
+        data: data
+    })
+}
+
+export function updateQiandaoByqiandaoId(qiandaoId) {
+    return request({
+        url: '/yuyue/zuowei/qiandao',
+        method: 'put',
+        data: data
+    })
+}
+
+// 查询详细
+export function getQiandaoByyuyueId(yuyueId) {
+    return request({
+        url: '/yuyue/zuowei/qiandao/' + yuyueId,
+        method: 'get'
+    })
+}
+
