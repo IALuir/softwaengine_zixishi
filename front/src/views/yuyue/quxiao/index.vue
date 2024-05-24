@@ -79,6 +79,11 @@
           <span>{{ parseTime(scope.row.yuyueTime) }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="终止时间" align="center" prop="deTime">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.deTime) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" align="center" prop="cTime">
         <template #default="scope">
           <span>{{ parseTime(scope.row.cTime) }}</span>
@@ -122,6 +127,15 @@
             <el-time-picker value-format="YYYY-MM-DD hh:mm:ss" placeholder="选择时间" v-model="form.yuyueTime" style="width: 100%;"></el-time-picker>
           </el-col>
         </el-form-item>
+        <el-form-item label="终止时间">
+          <el-col :span="11">
+            <el-date-picker value-format="YYYY-MM-DD" type="date" placeholder="选择日期" v-model="form.deDate" style="width: 100%;"></el-date-picker>
+          </el-col>
+          <el-col class="line" :span="2">-</el-col>
+          <el-col :span="11">
+            <el-time-picker value-format="YYYY-MM-DD hh:mm:ss" placeholder="选择时间" v-model="form.deTime" style="width: 100%;"></el-time-picker>
+          </el-col>
+        </el-form-item>
         <el-form-item label="创建时间">
           <el-col :span="11">
             <el-date-picker value-format="YYYY-MM-DD" type="date" placeholder="选择日期" v-model="form.cDate" style="width: 100%;"></el-date-picker>
@@ -144,7 +158,14 @@
 </template>
 
 <script setup>
-import {addYuyue, delYuyue, getYuyueByyuyueId, getYuyueList, updateYuyue} from "@/api/yuyuezuowei/yuyuezuowei.js";
+import {
+  addYuyue,
+  delYuyue,
+  getYuyueByyuyueId,
+  getYuyueByZuoweiId,
+  getYuyueList,
+  updateYuyue
+} from "@/api/yuyuezuowei/yuyuezuowei.js";
 import store from "@/store";
 const router = useRouter();
 const { proxy } = getCurrentInstance();
@@ -199,7 +220,7 @@ const data = reactive({
 });
 
 const { queryParams, form, rules } = toRefs(data);
-
+let tempId = 0;
 /** 查询角色列表 */
 function getList() {
   loading.value = true;
@@ -286,6 +307,7 @@ function handleUpdate(row) {
     form.value = response.data[0];
     form.value.yuyueDate = response.data[0].yuyueTime.split(" ")[0];
     form.value.cDate = response.data[0].cTime.split(" ")[0];
+    form.value.deDate = response.data[0].deTime.split(" ")[0];
     open.value = true;
     title.value = "修改预约";
   });
@@ -296,13 +318,20 @@ function submitForm() {
   proxy.$refs["yuyueRef"].validate(valid => {
     if (valid) {
       form.value.yuyueTime = form.value.yuyueDate + ' ' + form.value.yuyueTime.split(" ")[1]
+      form.value.deTime = form.value.deDate + ' ' + form.value.deTime.split(" ")[1]
       form.value.cTime = form.value.cDate + ' ' + form.value.cTime.split(" ")[1]
       if (form.value.yuyueId != undefined) {
-        updateYuyue(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
-          open.value = false;
-          getList();
-        });
+        getYuyueByZuoweiId(form.value.zuoweiId).then(res => {
+          if(!res.data.length){
+            updateYuyue(form.value).then(response => {
+              proxy.$modal.msgSuccess("修改成功");
+              open.value = false;
+              getList();
+            });
+          }else{
+            proxy.$modal.msgError("该座位已被预约");
+          }
+        })
       } else {
         addYuyue(form.value).then(response => {
           proxy.$modal.msgSuccess("新增成功");

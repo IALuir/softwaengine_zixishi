@@ -106,7 +106,7 @@
         <el-form-item label="预约座位">
           <p style="text-align: center;margin: 0;padding: 0;padding-left:10px">{{form.zuoweiId}}</p>
         </el-form-item>
-        <el-form-item label="预约时间" required>
+        <el-form-item label="开始时间" required>
           <el-col :span="11">
             <el-form-item prop="yuyueDate">
               <el-date-picker value-format="YYYY-MM-DD" type="date" placeholder="选择日期" v-model="form.yuyueDate" style="width: 100%;"></el-date-picker>
@@ -116,6 +116,19 @@
           <el-col :span="11">
             <el-form-item prop="yuyueTime">
               <el-time-picker value-format="YYYY-MM-DD hh:mm:ss" type="date" placeholder="选择时间" v-model="form.yuyueTime" style="width: 100%;"></el-time-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="终止时间" required>
+          <el-col :span="11">
+            <el-form-item prop="deDate">
+              <el-date-picker value-format="YYYY-MM-DD" type="date" placeholder="选择日期" v-model="form.deDate" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col class="line" :span="2">-</el-col>
+          <el-col :span="11">
+            <el-form-item prop="deTime">
+              <el-time-picker value-format="YYYY-MM-DD hh:mm:ss" type="date" placeholder="选择时间" v-model="form.deTime" style="width: 100%;"></el-time-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -208,7 +221,9 @@ export default {
         userId: undefined,
         userName: undefined,
         yuyueDate: undefined,
-        yuyueTime: undefined
+        yuyueTime: undefined,
+        deDate: undefined,
+        deTime: undefined
       };
     },
     /** 申请窗口 */
@@ -226,8 +241,9 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      if(this.form.yuyueTime && this.form.yuyueDate){
+      if(this.form.yuyueTime && this.form.yuyueDate && this.form.deTime && this.form.deDate){
         this.form.yuyueTime = this.form.yuyueDate + ' ' + this.form.yuyueTime.split(" ")[1]
+        this.form.deTime = this.form.deDate + ' ' + this.form.deTime.split(" ")[1]
         let tempId = "";
         let tempnum = 0;
         getYuyueByZuoweiId(this.form.zuoweiId).then(res => {
@@ -235,10 +251,10 @@ export default {
         })
         getYuyueNumberByUserId(this.form.userId).then(res => {
           tempnum = res.data.length;
-
         })
-        if(tempnum){
-          if(tempId){
+        console.log(tempnum,tempId)
+        if(tempnum == 0){
+          if(tempId  == 0){
             addYuyue(this.form).then(response => {
               this.$modal.msgSuccess("预约成功");
               this.open = false;

@@ -10,6 +10,7 @@
         <result property="userName"           column="user_name"             />
         <result property="zuoweiId"            column="zuowei_id"              />
         <result property="yuyueTime"           column="yuyueTime"             />
+        <result property="deTime"           column="deTime"             />
         <result property="cTime"          column="cTime"            />
     </resultMap>
 
@@ -21,13 +22,13 @@
     </resultMap>
 
     <sql id="selectYuyueVo">
-        select distinct y.yuyue_id,y.user_id,y.zuowei_id,y.yuyueTime,y.cTime,y.is_del,u.user_name,u.email,u.phonenumber
+        select distinct y.yuyue_id,y.user_id,y.zuowei_id,y.yuyueTime,y.deTime,y.cTime,y.is_del,u.user_name,u.email,u.phonenumber
         from sys_yuyue y
                  left join sys_user u on u.user_id = y.user_id
     </sql>
 
     <sql id="selectZuoweiVo">
-        select distinct z.zuowei_id,z.zuowei_number,z.zuowei_state,y.yuyueTime,y.cTime,u.user_name,u.email,u.phonenumber
+        select distinct z.zuowei_id,z.zuowei_number,z.zuowei_state,y.yuyueTime,y.deTime,y.cTime,u.user_name,u.email,u.phonenumber
         from sys_zuowei z
                  left join sys_yuyue y on y.zuowei_id = z.zuowei_id
                  left join sys_user u on u.user_id = y.user_id
@@ -70,8 +71,9 @@
     <update id="updatetYuyue" parameterType="SysYuyue">
         update sys_yuyue
         <set>
-            zuowei = #{zuowei},
+            zuowei_id = #{zuoweiId},
             yuyueTime = #{yuyueTime},
+            deTime = #{deTime},
             cTime = #{cTime}
         </set>
         where sys_yuyue.yuyue_id = #{yuyueId}
@@ -82,11 +84,13 @@
         user_id,
         zuowei_id,
         yuyueTime,
+        deTime,
         cTime
         )values(
         #{userId},
         #{zuoweiId},
         #{yuyueTime},
+        #{deTime},
         sysdate()
         )
     </insert>
