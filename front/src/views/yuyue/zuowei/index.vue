@@ -253,8 +253,8 @@ export default {
     /** 提交按钮 */
     submitForm() {
       if(this.form.yuyueTime && this.form.yuyueDate && this.form.deTime && this.form.deDate){
-        this.form.yuyueTime = this.form.yuyueDate + ' ' + this.form.yuyueTime.split(" ")[1]
-        this.form.deTime = this.form.deDate + ' ' + this.form.deTime.split(" ")[1]
+        this.form.yuyueTime = this.form.yuyueDate + ' ' + this.form.yuyueTime
+        this.form.deTime = this.form.deDate + ' ' + this.form.deTime
         if(this.tempnum == 0){
           if(this.tempId  == 0){
             addYuyue(this.form).then(response => {

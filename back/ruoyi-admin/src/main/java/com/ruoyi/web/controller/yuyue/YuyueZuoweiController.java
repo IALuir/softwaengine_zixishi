@@ -128,7 +128,7 @@ public class YuyueZuoweiController extends BaseController{
      */
 
     @Log(title = "签到管理", businessType = BusinessType.UPDATE)
-    @PutMapping("/qiandao/")
+    @PutMapping(value ="/qiandao")
     public AjaxResult updateQiandao(@Validated @RequestBody SysQiandao qiandao)
     {
         return toAjax(yuyueService.updateQiandao(qiandao));
