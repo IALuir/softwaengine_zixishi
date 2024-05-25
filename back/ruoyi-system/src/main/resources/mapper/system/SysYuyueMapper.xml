@@ -26,7 +26,7 @@
         <result property="yuyueId"           column="yuyue_id"             />
         <result property="qiandaoTime"           column="qiandaoTime"             />
         <result property="qiantuiTime"            column="qiantuiTime"              />
-        <result property="state"            column="state"              />
+        <result property="state"            column="qiandao_state"              />
     </resultMap>
 
     <sql id="selectYuyueVo">
@@ -142,7 +142,7 @@
             yuyue_id = #{yuyueId},
             qiandaoTime = #{qiandaoTime},
             qiantuiTime = #{qiantuiTime},
-            state = #{state}
+            qiandao_state = #{state}
         </set>
         where sys_qiandao.qiandao_id = #{qiandaoId}
     </update>

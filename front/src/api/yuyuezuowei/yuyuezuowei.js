@@ -72,7 +72,7 @@ export function addQiandao(data) {
     })
 }
 
-export function updateQiandaoByqiandaoId(qiandaoId) {
+export function updateQiandao(data) {
     return request({
         url: '/yuyue/zuowei/qiandao',
         method: 'put',

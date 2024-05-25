@@ -41,8 +41,7 @@ public class SysYuyueServiceImpl implements ISysYuyueService{
     }
 
     @Override
-    public int updateYuyue(SysYuyue Yuyue) {
-        return yuyueMapper.updatetYuyue(Yuyue);
+    public int updateYuyue(SysYuyue Yuyue) {return yuyueMapper.updatetYuyue(Yuyue);
     }
 
     @Override
