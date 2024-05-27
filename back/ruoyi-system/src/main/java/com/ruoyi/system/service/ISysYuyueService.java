@@ -31,4 +31,6 @@ public interface ISysYuyueService {
 
     public int updateQiandao(SysQiandao qiandao);
 
+    public void Autozuowei(int state);
+
 }

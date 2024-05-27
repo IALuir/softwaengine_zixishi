@@ -63,4 +63,9 @@ public class SysYuyueServiceImpl implements ISysYuyueService{
     public int updateQiandao(SysQiandao qiandao) {
         return yuyueMapper.updatetQiandao(qiandao);
     }
+
+    @Override
+    public void Autozuowei(int state) {
+        yuyueMapper.Autozuowei(state);
+    }
 }

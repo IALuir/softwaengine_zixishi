@@ -12,6 +12,8 @@
         <result property="yuyueTime"           column="yuyueTime"             />
         <result property="deTime"           column="deTime"             />
         <result property="cTime"          column="cTime"            />
+        <result property="is_del"          column="is_del"            />
+        <result property="state"          column="qiandao_state"            />
     </resultMap>
 
     <resultMap type="SysZuowei" id="SysZuoweiResult">
@@ -30,9 +32,10 @@
     </resultMap>
 
     <sql id="selectYuyueVo">
-        select distinct y.yuyue_id,y.user_id,y.zuowei_id,y.yuyueTime,y.deTime,y.cTime,y.is_del,u.user_name,u.email,u.phonenumber
+        select distinct y.yuyue_id,y.user_id,y.zuowei_id,y.yuyueTime,y.deTime,y.cTime,y.is_del,u.user_name,u.email,u.phonenumber,q.qiandaoTime,q.qiantuiTime,q.qiandao_state
         from sys_yuyue y
                  left join sys_user u on u.user_id = y.user_id
+                 left join sys_qiandao q on q.yuyue_id = y.yuyue_id
     </sql>
 
     <sql id="selectZuoweiVo">
@@ -89,7 +92,8 @@
             zuowei_id = #{zuoweiId},
             yuyueTime = #{yuyueTime},
             deTime = #{deTime},
-            cTime = #{cTime}
+            cTime = #{cTime},
+            is_del = #{is_del}
         </set>
         where sys_yuyue.yuyue_id = #{yuyueId}
     </update>
@@ -122,7 +126,7 @@
             yuyue_id,
             qiandaoTime,
             qiantuiTime,
-            state
+            qiandao_state
         )values(
             #{yuyueId},
             #{qiandaoTime},
@@ -145,6 +149,13 @@
             qiandao_state = #{state}
         </set>
         where sys_qiandao.qiandao_id = #{qiandaoId}
+    </update>
+
+    <update id="Autozuowei" parameterType="int">
+        update sys_qiandao
+        <set>
+            qiandao_state = #{state}
+        </set>
     </update>
 
 
