@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.system.domain.SysQiandao;
 import com.ruoyi.system.domain.SysYuyue;
 import com.ruoyi.system.domain.SysZuowei;
 
@@ -23,5 +24,11 @@ public interface ISysYuyueService {
     public int updateYuyue(SysYuyue Yuyue);
 
     public int deleteYuyueByIds(Long[] yuyueIds);
+
+    public int insertQiandao(SysQiandao Qiandao);
+
+    public List<SysQiandao> selectQiandaoByYuyueId(Long yuyueId);
+
+    public int updateQiandao(SysQiandao qiandao);
 
 }

@@ -2,6 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import java.util.List;
 
+import com.ruoyi.system.domain.SysQiandao;
 import com.ruoyi.system.domain.SysYuyue;
 import com.ruoyi.system.domain.SysZuowei;
 import com.ruoyi.system.mapper.SysYuyueMapper;
@@ -40,12 +41,26 @@ public class SysYuyueServiceImpl implements ISysYuyueService{
     }
 
     @Override
-    public int updateYuyue(SysYuyue Yuyue) {
-        return yuyueMapper.updatetYuyue(Yuyue);
+    public int updateYuyue(SysYuyue Yuyue) {return yuyueMapper.updatetYuyue(Yuyue);
     }
 
     @Override
     public int deleteYuyueByIds(Long[] yuyueIds) {
         return yuyueMapper.deleteYuyueByYuyueIds(yuyueIds);
+    }
+
+    @Override
+    public int insertQiandao(SysQiandao Qiandao){
+        return yuyueMapper.insertQiandao(Qiandao);
+    }
+
+    @Override
+    public List<SysQiandao> selectQiandaoByYuyueId(Long yuyueId) {
+        return yuyueMapper.selectQiandaoByYuyueId(yuyueId);
+    }
+
+    @Override
+    public int updateQiandao(SysQiandao qiandao) {
+        return yuyueMapper.updatetQiandao(qiandao);
     }
 }
