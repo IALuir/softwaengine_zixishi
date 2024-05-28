@@ -1,19 +1,20 @@
 package com.ruoyi.system.service;
 
-import java.util.List;
 import com.ruoyi.system.domain.SysZuowei;
+
+import java.util.List;
 
 /**
  * 座位管理Service接口
- * 
+ *
  * @author ww
  * @date 2024-05-25
  */
-public interface ISysZuoweiService 
+public interface ISysZuoweiService
 {
     /**
      * 查询座位管理
-     * 
+     *
      * @param zuoweiId 座位管理主键
      * @return 座位管理
      */
@@ -21,7 +22,7 @@ public interface ISysZuoweiService
 
     /**
      * 查询座位管理列表
-     * 
+     *
      * @param sysZuowei 座位管理
      * @return 座位管理集合
      */
@@ -29,7 +30,7 @@ public interface ISysZuoweiService
 
     /**
      * 新增座位管理
-     * 
+     *
      * @param sysZuowei 座位管理
      * @return 结果
      */
@@ -37,7 +38,7 @@ public interface ISysZuoweiService
 
     /**
      * 修改座位管理
-     * 
+     *
      * @param sysZuowei 座位管理
      * @return 结果
      */
@@ -45,7 +46,7 @@ public interface ISysZuoweiService
 
     /**
      * 批量删除座位管理
-     * 
+     *
      * @param zuoweiIds 需要删除的座位管理主键集合
      * @return 结果
      */
@@ -53,7 +54,7 @@ public interface ISysZuoweiService
 
     /**
      * 删除座位管理信息
-     * 
+     *
      * @param zuoweiId 座位管理主键
      * @return 结果
      */

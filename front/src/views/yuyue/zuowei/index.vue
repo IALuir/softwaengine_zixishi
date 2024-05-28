@@ -235,6 +235,7 @@ export default {
       this.tempId = 0;
       this.tempnum = 0;
       getZuoweiByZuoweiId(id).then(response => {
+        console.log(response)
         this.form = response.data[0];
         this.form.userId = store.state.value.user.id;
         getUser(this.form.userId).then(response1 => {
@@ -257,10 +258,17 @@ export default {
         this.form.deTime = this.form.deDate + ' ' + this.form.deTime
         if(this.tempnum == 0){
           if(this.tempId  == 0){
-            addYuyue(this.form).then(response => {
-              this.$modal.msgSuccess("预约成功");
-              this.open = false;
-            })
+            let temptime = new Date(this.form.yuyueTime) - new Date(this.currentTime());
+            let temptime1 = new Date(this.form.deTime) - new Date(this.form.yuyueTime);
+            if(temptime > 0 && temptime1 > 0){
+              addYuyue(this.form).then(response => {
+                this.$modal.msgSuccess("预约成功");
+                this.open = false;
+              })
+            }else{
+                this.$modal.msgError("预约失败，预约时间或终止时间选择错误");
+                this.open = false;
+            }
           }else{
             this.$modal.msgError("预约失败，座位已经被预约");
             this.open = false;
@@ -277,6 +285,32 @@ export default {
     cancel() {
       this.open = false;
       this.reset();
+    },
+    currentTime() {
+      let date = new Date();
+      let year = date.getFullYear();
+      let month = date.getMonth();
+      let dateArr = [
+        date.getMonth() + 1,
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+      ];
+      if(dateArr[2] < 10) dateArr[2] = '0' + dateArr[2]
+      if(dateArr[3] < 10) dateArr[3] = '0' + dateArr[3]
+      if(dateArr[4] < 10) dateArr[4] = '0' + dateArr[4]
+      return year +
+          "/" +
+          dateArr[0] +
+          "/" +
+          dateArr[1] +
+          " " +
+          dateArr[2] +
+          ":" +
+          dateArr[3] +
+          ":" +
+          dateArr[4]
     }
   },
   watch: {

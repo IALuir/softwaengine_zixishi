@@ -1,19 +1,18 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
-import com.ruoyi.system.domain.SysZuowei;
 
 /**
  * 座位管理Mapper接口
- * 
+ *
  * @author ww
  * @date 2024-05-25
  */
-public interface SysZuoweiMapper 
+public interface SysZuoweiMapper
 {
     /**
      * 查询座位管理
-     * 
+     *
      * @param zuoweiId 座位管理主键
      * @return 座位管理
      */
@@ -21,7 +20,7 @@ public interface SysZuoweiMapper
 
     /**
      * 查询座位管理列表
-     * 
+     *
      * @param sysZuowei 座位管理
      * @return 座位管理集合
      */
@@ -29,7 +28,7 @@ public interface SysZuoweiMapper
 
     /**
      * 新增座位管理
-     * 
+     *
      * @param sysZuowei 座位管理
      * @return 结果
      */
@@ -37,7 +36,7 @@ public interface SysZuoweiMapper
 
     /**
      * 修改座位管理
-     * 
+     *
      * @param sysZuowei 座位管理
      * @return 结果
      */
@@ -45,7 +44,7 @@ public interface SysZuoweiMapper
 
     /**
      * 删除座位管理
-     * 
+     *
      * @param zuoweiId 座位管理主键
      * @return 结果
      */
@@ -53,7 +52,7 @@ public interface SysZuoweiMapper
 
     /**
      * 批量删除座位管理
-     * 
+     *
      * @param zuoweiIds 需要删除的数据主键集合
      * @return 结果
      */

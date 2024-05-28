@@ -27,7 +27,9 @@ public class SysYuyueServiceImpl implements ISysYuyueService{
     }
 
     @Override
-    public List<SysZuowei> selectZuoweiByZuoweiId(String zuoweiId) {return yuyueMapper.selectZuoweiByZuoweiId(zuoweiId);}
+    public List<SysZuowei> selectZuoweiByZuoweiId(String zuoweiId) {
+        return yuyueMapper.selectZuoweiByZuoweiId(zuoweiId);
+    }
 
     @Override
     public List<SysYuyue> selectYuyueByZuoweiId(String zuoweiId) {return yuyueMapper.selectYuyueByZuoweiId(zuoweiId);}
@@ -62,5 +64,20 @@ public class SysYuyueServiceImpl implements ISysYuyueService{
     @Override
     public int updateQiandao(SysQiandao qiandao) {
         return yuyueMapper.updatetQiandao(qiandao);
+    }
+
+    @Override
+    public void AutozuoweiShifang(SysQiandao qiandao) {
+        yuyueMapper.AutozuoweiShifang(qiandao);
+    }
+
+    @Override
+    public List<SysQiandao> selectQiandaoAll() {
+        return yuyueMapper.selectQiandaoAll();
+    }
+
+    @Override
+    public List<SysYuyue> selectYuyueAll() {
+        return yuyueMapper.selectYuyueAll();
     }
 }

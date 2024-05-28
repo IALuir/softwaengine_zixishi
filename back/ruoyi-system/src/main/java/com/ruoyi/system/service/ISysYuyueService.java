@@ -2,7 +2,6 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 
-import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.system.domain.SysQiandao;
 import com.ruoyi.system.domain.SysYuyue;
 import com.ruoyi.system.domain.SysZuowei;
@@ -30,5 +29,11 @@ public interface ISysYuyueService {
     public List<SysQiandao> selectQiandaoByYuyueId(Long yuyueId);
 
     public int updateQiandao(SysQiandao qiandao);
+
+    public void AutozuoweiShifang(SysQiandao qiandao);
+
+    public List<SysQiandao> selectQiandaoAll();
+
+    public List<SysYuyue> selectYuyueAll();
 
 }
