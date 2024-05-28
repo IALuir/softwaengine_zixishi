@@ -1,9 +1,16 @@
 package com.ruoyi.system.domain;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
-
+/**
+ * 座位管理对象 sys_zuowei
+ *
+ * @author ww
+ * @date 2024-05-25
+ */
 public class SysZuowei extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -12,8 +19,7 @@ public class SysZuowei extends BaseEntity
     @Excel(name = "座位id")
     private String zuoweiId;
 
-    /** 预约id */
-    @Excel(name = "预约id")
+    @Excel(name = "预约记录序号")
     private Long yuyueId;
 
     /** 使用数 */
@@ -39,7 +45,7 @@ public class SysZuowei extends BaseEntity
         this.yuyueId = yuyueId;
     }
 
-    public Long getYuyueId()
+    public String getYuyueId()
     {
         return yuyueId;
     }

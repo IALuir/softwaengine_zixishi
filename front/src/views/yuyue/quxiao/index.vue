@@ -89,7 +89,8 @@
           <span>{{ parseTime(scope.row.cTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="预约状态" prop="state" width="320" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" v-if=false>
         <template #default="scope">
           <el-tooltip content="修改" placement="top" v-if="scope.row.yuyueId !== 0">
             <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"></el-button>
@@ -234,6 +235,11 @@ function getList() {
     yuyueList.value = response.rows;
     total.value = response.total;
     loading.value = false;
+    if(response.total){
+      //0：未到签到时间 1：正常签到，正常签退 2:正常签到，未到签退时间 3:正常签到,未签退 4:正常签到,超时签退 5:超时签到,未到签退时间 6:超时签到，超时签退 7:超时签到，正常签退 8:未签到 9:超时签到,未到签
+      const stateList = ["未结束：未到签到时间","已结束：正常签到，正常签退","未结束：正常签到，未到签退时间","已结束：正常签到,未签退","已结束：正常签到,超时签退","未结束：超时签到,未到签退时间","已结束：超时签到，超时签退","已结束：超时签到，正常签退","已结束：未签到","已结束：超时签到,未到签"]
+      yuyueList.value[0].state = stateList[response.rows[0].state]
+    }
   });
 }
 /** 搜索按钮操作 */
@@ -289,7 +295,8 @@ function reset() {
     cTime: undefined,
     yuyueTime: undefined,
     cDate: undefined,
-    yuyueDate: undefined
+    yuyueDate: undefined,
+    state:undefined
   };
   proxy.resetForm("yuyueRef");
 }

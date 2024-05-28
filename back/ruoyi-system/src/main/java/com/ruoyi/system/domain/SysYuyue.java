@@ -41,6 +41,10 @@ public class SysYuyue extends BaseEntity{
 
     private Date yuyueRightTime;
 
+    private int is_del;
+
+    private int state;
+
     public Long getYuyueId()
     {
         return yuyueId;
@@ -143,6 +147,26 @@ public class SysYuyue extends BaseEntity{
     public void setyuyueRightTime(Date yuyueRightTime)
     {
         this.yuyueRightTime = yuyueRightTime;
+    }
+
+    public int getState()
+    {
+        return state;
+    }
+
+    public void setState(int state)
+    {
+        this.state = state;
+    }
+
+    public int getIs_del()
+    {
+        return is_del;
+    }
+
+    public void setIs_del(int is_del)
+    {
+        this.is_del = is_del;
     }
 
 }

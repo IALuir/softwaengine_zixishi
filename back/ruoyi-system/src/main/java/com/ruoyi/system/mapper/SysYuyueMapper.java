@@ -28,4 +28,10 @@ public interface SysYuyueMapper {
     public List<SysQiandao> selectQiandaoByYuyueId(Long yuyueId);
 
     public int updatetQiandao(SysQiandao qiandao);
+
+    public void AutozuoweiShifang(SysQiandao qiandao);
+
+    public List<SysQiandao> selectQiandaoAll();
+
+    public List<SysYuyue> selectYuyueAll();
 }
