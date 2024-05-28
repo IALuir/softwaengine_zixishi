@@ -83,7 +83,7 @@
     </el-row>
 
     <!-- 表格数据 -->
-    <el-table v-loading="loading" :data="roleList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="tousuList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="标题" prop="roleId" width="120" />
       <el-table-column label="类型" prop="roleName" :show-overflow-tooltip="true" width="150" />
@@ -186,7 +186,7 @@
   </div>
 </template>
 
-<script setup name="Role">
+<script setup name="Tousu">
 import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole, deptTreeSelect } from "@/api/system/role";
 import { listTousu } from "@/api/tousu/tousu";
 import { roleMenuTreeselect, treeselect as menuTreeselect } from "@/api/system/menu";
@@ -195,7 +195,7 @@ const router = useRouter();
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
-const roleList = ref([]);
+const tousuList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
@@ -246,7 +246,7 @@ const { queryParams, form, rules } = toRefs(data);
 function getList() {
   loading.value = true;
   listTousu(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
-    roleList.value = response.rows;
+    tousuList.value = response.rows;
     total.value = response.total;
     loading.value = false;
   });

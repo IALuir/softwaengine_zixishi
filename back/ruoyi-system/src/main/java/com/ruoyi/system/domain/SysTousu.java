@@ -11,7 +11,7 @@ public class SysTousu extends BaseEntity {
     @Excel(name = "投诉类型")
     private String tousuType;
     @Excel(name = "用户ID")
-    private Long tousuUserId;
+    private Long userId;
     @Excel(name = "投诉标题")
     private String tousuTitle;
     @Excel(name = "投诉状态")
