@@ -1,38 +1,37 @@
 package com.ruoyi.system.domain;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
-public class SysZuowei extends BaseEntity{
+
+public class SysZuowei extends BaseEntity
+{
     private static final long serialVersionUID = 1L;
 
-    @Excel(name = "座位ID")
+    /** 座位id */
+    @Excel(name = "座位id")
     private String zuoweiId;
 
-    @Excel(name = "预约记录序号")
+    /** 预约id */
+    @Excel(name = "预约id")
     private Long yuyueId;
 
-    @Excel(name = "被预约次数")
-    private Long zuoweiYuyueNumber;
+    /** 使用数 */
+    @Excel(name = "使用数")
+    private Long zuoweiNumber;
 
-    @Excel(name = "座位状态")
-    private boolean zuoweiState;
-
-    public String getZuoweiId()
-    {
-        return zuoweiId;
-    }
+    /** 状态 */
+    @Excel(name = "状态")
+    private Integer zuoweiState;
 
     public void setZuoweiId(String zuoweiId)
     {
         this.zuoweiId = zuoweiId;
     }
 
-    public Long getYuyueId()
+    public String getZuoweiId()
     {
-        return yuyueId;
+        return zuoweiId;
     }
 
     public void setYuyueId(Long yuyueId)
@@ -40,23 +39,28 @@ public class SysZuowei extends BaseEntity{
         this.yuyueId = yuyueId;
     }
 
-    public Long getZuoweiYuyueNumber()
+    public Long getYuyueId()
     {
-        return zuoweiYuyueNumber;
+        return yuyueId;
     }
 
-    public void setZuoweiYuyueNumber(Long zuoweiYuyueNumber)
+    public void setZuoweiNumber(Long zuoweiNumber)
     {
-        this.zuoweiYuyueNumber = zuoweiYuyueNumber;
+        this.zuoweiNumber = zuoweiNumber;
     }
 
-    public boolean getZuoweiState()
+    public Long getZuoweiNumber()
+    {
+        return zuoweiNumber;
+    }
+    public void setZuoweiState(Integer zuoweiState)
+    {
+        this.zuoweiState = zuoweiState;
+    }
+
+    public Integer getZuoweiState()
     {
         return zuoweiState;
     }
 
-    public void setZuoweiState(boolean zuoweiState)
-    {
-        this.zuoweiState = zuoweiState;
-    }
 }

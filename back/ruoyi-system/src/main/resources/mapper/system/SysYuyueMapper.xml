@@ -19,7 +19,7 @@
     <resultMap type="SysZuowei" id="SysZuoweiResult">
         <id     property="zuoweiId"             column="zuowei_id"               />
         <result property="yuyueId"           column="yuyue_id"             />
-        <result property="zuoweiYuyueNumber"           column="zuowei_number"             />
+        <result property="zuoweiNumber"           column="zuowei_number"             />
         <result property="zuoweiState"            column="zuowei_state"              />
     </resultMap>
 
@@ -151,12 +151,21 @@
         where sys_qiandao.qiandao_id = #{qiandaoId}
     </update>
 
-    <update id="Autozuowei" parameterType="int">
+    <update id="AutozuoweiShifang" parameterType="SysQiandao">
         update sys_qiandao
         <set>
             qiandao_state = #{state}
         </set>
+        where sys_qiandao.qiandao_id = #{qiandaoId}
     </update>
+
+    <select id="selectQiandaoAll" resultMap="SysQiandaoResult">
+        <include refid="selectQiandaoiVo"/>
+    </select>
+
+    <select id="selectYuyueAll" resultMap="SysYuyueResult">
+        <include refid="selectYuyueVo"/>
+    </select>
 
 
 </mapper>

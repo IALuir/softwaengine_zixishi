@@ -136,12 +136,28 @@ public class YuyueZuoweiController extends BaseController{
     {
         return success(yuyueService.selectQiandaoByYuyueId(yuyueId));
     }
-    @Scheduled(cron="0 0 0 * * *")
+    @Scheduled(cron="0 0 22 * * *")
     @ResponseBody
     @Log(title = "自动释放座位", businessType = BusinessType.UPDATE)
     public void AutoZuowei()
     {
+        List<SysQiandao> qiandaolist = yuyueService.selectQiandaoAll();
+        for (SysQiandao q:qiandaolist) {
+            if(q.getState() == 0){
+                q.setState(8);
+            }else if(q.getState() == 2){
+                q.setState(3);
+            }else if(q.getState() == 5){
+                q.setState(9);
+            }
+            yuyueService.AutozuoweiShifang(q);
+        }
 
+        List<SysYuyue> yuyuelist = yuyueService.selectYuyueAll();
+        for (SysYuyue y:yuyuelist) {
+            y.setIs_del(1);
+            yuyueService.updateYuyue(y);
+        }
     }
 
 }

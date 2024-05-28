@@ -122,7 +122,7 @@ export default {
       })
     },
     qiandao_button(){
-      this.reset() //0：未到签到时间 1：正常签到，正常签退 2:正常签到，未到签退时间 3:正常签到,未签退 4:正常签到,超时签退 5:超时签到,未到签退时间 6:超时签到，超时签退 7:超时签到，正常签退 8:未签到
+      this.reset() //0：未到签到时间 1：正常签到，正常签退 2:正常签到，未到签退时间 3:正常签到,未签退 4:正常签到,超时签退 5:超时签到,未到签退时间 6:超时签到，超时签退 7:超时签到，正常签退 8:未签到 9:超时签到,未到签
       let temptime = new Date(this.qiandaoshijian) - new Date(this.currentTime());
       this.form.qiandaoId = this.qiandaoId;
       this.form.yuyueId = this.yuyueId;
@@ -150,7 +150,7 @@ export default {
       })
     },
     qiantui_button(){
-      this.reset() //0：未到签到时间 1：正常签到，正常签退 2:正常签到，未到签退时间 3:正常签到,未签退 4:正常签到,超时签退 5:超时签到,未到签退时间 6:超时签到，超时签退 7:超时签到，正常签退 8:未签到
+      this.reset() //0：未到签到时间 1：正常签到，正常签退 2:正常签到，未到签退时间 3:正常签到,未签退 4:正常签到,超时签退 5:超时签到,未到签退时间 6:超时签到，超时签退 7:超时签到，正常签退 8:未签到 9:超时签到,未到签
       let temptime = new Date(this.qiantuishijian) - new Date(this.currentTime());
       this.form.qiandaoId = this.qiandaoId;
       this.form.yuyueId = this.yuyueId;

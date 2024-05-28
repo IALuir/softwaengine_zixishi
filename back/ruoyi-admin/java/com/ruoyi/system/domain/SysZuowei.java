@@ -7,7 +7,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 座位管理对象 sys_zuowei
- * 
+ *
  * @author ww
  * @date 2024-05-25
  */
@@ -19,6 +19,9 @@ public class SysZuowei extends BaseEntity
     @Excel(name = "座位id")
     private String zuoweiId;
 
+    @Excel(name = "预约记录序号")
+    private Long yuyueId;
+
     /** 使用数 */
     @Excel(name = "使用数")
     private Long zuoweiNumber;
@@ -27,40 +30,43 @@ public class SysZuowei extends BaseEntity
     @Excel(name = "状态")
     private Integer zuoweiState;
 
-    public void setZuoweiId(String zuoweiId) 
+    public void setZuoweiId(String zuoweiId)
     {
         this.zuoweiId = zuoweiId;
     }
 
-    public String getZuoweiId() 
+    public String getZuoweiId()
     {
         return zuoweiId;
     }
-    public void setZuoweiNumber(Long zuoweiNumber) 
+
+    public void setYuyueId(Long yuyueId)
+    {
+        this.yuyueId = yuyueId;
+    }
+
+    public String getYuyueId()
+    {
+        return yuyueId;
+    }
+
+    public void setZuoweiNumber(Long zuoweiNumber)
     {
         this.zuoweiNumber = zuoweiNumber;
     }
 
-    public Long getZuoweiNumber() 
+    public Long getZuoweiNumber()
     {
         return zuoweiNumber;
     }
-    public void setZuoweiState(Integer zuoweiState) 
+    public void setZuoweiState(Integer zuoweiState)
     {
         this.zuoweiState = zuoweiState;
     }
 
-    public Integer getZuoweiState() 
+    public Integer getZuoweiState()
     {
         return zuoweiState;
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("zuoweiId", getZuoweiId())
-            .append("zuoweiNumber", getZuoweiNumber())
-            .append("zuoweiState", getZuoweiState())
-            .toString();
-    }
 }

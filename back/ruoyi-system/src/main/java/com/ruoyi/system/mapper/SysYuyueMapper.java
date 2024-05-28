@@ -29,5 +29,9 @@ public interface SysYuyueMapper {
 
     public int updatetQiandao(SysQiandao qiandao);
 
-    public void Autozuowei(int state);
+    public void AutozuoweiShifang(SysQiandao qiandao);
+
+    public List<SysQiandao> selectQiandaoAll();
+
+    public List<SysYuyue> selectYuyueAll();
 }
