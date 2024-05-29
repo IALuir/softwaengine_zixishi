@@ -14,15 +14,19 @@
         <result property="tousuMain"          column="tousu_main"            />
     </resultMap>
 
-    <sql id="selectTousuVo">
-        select distinct y.tousu_id,y.user_id,y.tousu_title,y.tousu_type,y.tousu_state,y.tousu_createtime,y.tousu_main,u.user_name,u.email,u.phonenumber
-        from sys_tousu y
-                 left join sys_user u on u.user_id = y.user_id
-    </sql>
+<!--    <sql id="selectTousuVo">-->
+<!--        select distinct y.tousu_id,y.user_id,y.tousu_title,y.tousu_type,y.tousu_state,y.tousu_createtime,y.tousu_main,u.user_name,u.email,u.phonenumber-->
+<!--        from sys_tousu y-->
+<!--                 left join sys_user u on u.user_id = y.user_id-->
+<!--    </sql>-->
 
+<!--    <select id="selectTousuList" parameterType="SysTousu" resultMap="SysTousuResult">-->
+<!--        <include refid="selectTousuVo"/>-->
+<!--        WHERE  y.user_id = #{userId}-->
+<!--    </select>-->
     <select id="selectTousuList" parameterType="SysTousu" resultMap="SysTousuResult">
-        <include refid="selectTousuVo"/>
-        WHERE  y.user_id = #{userId}
+        select distinct y.tousu_id,y.user_id,y.tousu_title,y.tousu_type,y.tousu_state,y.tousu_createtime,y.tousu_main,u.user_name,u.email,u.phonenumber
+        from sys_tousu y left join sys_user u on u.user_id = y.user_id
     </select>
 
 </mapper>

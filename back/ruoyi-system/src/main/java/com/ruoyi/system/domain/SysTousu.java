@@ -19,6 +19,6 @@ public class SysTousu extends BaseEntity {
     @Excel(name = "投诉时间")
     private String tousuCreatetime;
     @Excel(name = "投诉内容")
-    private String tousumain;
+    private String tousuMain;
 
 }

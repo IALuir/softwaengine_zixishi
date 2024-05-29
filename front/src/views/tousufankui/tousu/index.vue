@@ -85,10 +85,10 @@
     <!-- 表格数据 -->
     <el-table v-loading="loading" :data="tousuList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="标题" prop="roleId" width="120" />
-      <el-table-column label="类型" prop="roleName" :show-overflow-tooltip="true" width="150" />
-      <el-table-column label="状态" prop="roleKey" :show-overflow-tooltip="true" width="150" />
-      <el-table-column label="创建时间" align="center" prop="createTime">
+      <el-table-column label="标题" prop="tousuTitle" width="120" />
+      <el-table-column label="类型" prop="tousuType" :show-overflow-tooltip="true" width="150" />
+      <el-table-column label="状态" prop="tousuState" :show-overflow-tooltip="true" width="150" />
+      <el-table-column label="创建时间" align="center" prop="tousuCreatetima">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
@@ -187,7 +187,7 @@
 </template>
 
 <script setup name="Tousu">
-import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole, deptTreeSelect } from "@/api/system/role";
+import { addRole, changeRoleStatus, dataScope, delRole, getRole, updateRole, deptTreeSelect } from "@/api/system/role";
 import { listTousu } from "@/api/tousu/tousu";
 import { roleMenuTreeselect, treeselect as menuTreeselect } from "@/api/system/menu";
 
@@ -229,9 +229,9 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    roleName: undefined,
-    roleKey: undefined,
-    status: undefined
+    tousuTitle: undefined,
+    tousuType: undefined,
+    tousuState: undefined
   },
   rules: {
     roleName: [{ required: true, message: "角色名称不能为空", trigger: "blur" }],
@@ -280,7 +280,7 @@ function handleExport() {
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.roleId);
+  ids.value = selection.map(item => item.tousuId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
