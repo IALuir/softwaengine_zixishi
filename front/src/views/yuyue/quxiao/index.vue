@@ -90,9 +90,9 @@
         </template>
       </el-table-column>
       <el-table-column label="预约状态" prop="state" width="320" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" v-if=false>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-tooltip content="修改" placement="top" v-if="scope.row.yuyueId !== 0">
+          <el-tooltip content="修改" placement="top" v-if="scope.row.yuyueId !== 0" >
             <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"></el-button>
           </el-tooltip>
           <el-tooltip content="删除" placement="top" v-if="scope.row.yuyueId !== 0">
@@ -137,7 +137,7 @@
             <el-time-picker value-format="YYYY-MM-DD HH:mm:ss" placeholder="选择时间" v-model="form.deTime" style="width: 100%;"></el-time-picker>
           </el-col>
         </el-form-item>
-        <el-form-item label="创建时间">
+        <el-form-item label="创建时间" v-if=false>
           <el-col :span="11">
             <el-date-picker value-format="YYYY-MM-DD" type="date" placeholder="选择日期" v-model="form.cDate" style="width: 100%;"></el-date-picker>
           </el-col>
