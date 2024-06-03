@@ -1,24 +1,24 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" v-show="showSearch" :inline="true" label-width="68px">
-      <el-form-item label="标题" prop="roleName">
+      <el-form-item label="标题" prop="tousuTitle">
         <el-input
-            v-model="queryParams.roleName"
+            v-model="queryParams.tousuTitle"
             placeholder="请输入标题"
             clearable
             style="width: 240px"
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="处理状态" prop="status">
+      <el-form-item label="处理状态" prop="tousuState">
         <el-select
-            v-model="queryParams.status"
+            v-model="queryParams.tousuState"
             placeholder="请输入处理状态"
             clearable
             style="width: 240px"
         >
           <el-option
-              v-for="dict in sys_normal_disable"
+              v-for="dict in tousu_state_choose"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value"
@@ -47,7 +47,6 @@
             plain
             icon="Plus"
             @click="handleAdd"
-            v-hasPermi="['system:role:add']"
         >申请投诉</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -57,7 +56,6 @@
             icon="Edit"
             :disabled="single"
             @click="handleUpdate"
-            v-hasPermi="['system:role:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -67,7 +65,6 @@
             icon="Delete"
             :disabled="multiple"
             @click="handleDelete"
-            v-hasPermi="['system:role:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -76,7 +73,6 @@
             plain
             icon="Download"
             @click="handleExport"
-            v-hasPermi="['system:role:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -88,24 +84,23 @@
       <el-table-column label="标题" prop="tousuTitle" width="120" />
       <el-table-column label="类型" prop="tousuType" :show-overflow-tooltip="true" width="150" />
       <el-table-column label="状态" prop="tousuState" :show-overflow-tooltip="true" width="150" />
-      <el-table-column label="创建时间" align="center" prop="tousuCreatetima">
+      <el-table-column label="创建人" prop="createBy" :show-overflow-tooltip="true" width="150" />
+      <el-table-column label="创建时间" align="center" prop="tousuCreatetime" width="200">
         <template #default="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
+          <span>{{ parseTime(scope.row.tousuCreatetime) }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="投诉内容" prop="tousuMain" :show-overflow-tooltip="true" width="500" align="center"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-tooltip content="修改" placement="top" v-if="scope.row.roleId !== 1">
-            <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:role:edit']"></el-button>
+          <el-tooltip content="修改" placement="top">
+            <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"></el-button>
           </el-tooltip>
-          <el-tooltip content="删除" placement="top" v-if="scope.row.roleId !== 1">
-            <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:role:remove']"></el-button>
+          <el-tooltip content="删除" placement="top">
+            <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"></el-button>
           </el-tooltip>
-          <el-tooltip content="数据权限" placement="top" v-if="scope.row.roleId !== 1">
-            <el-button link type="primary" icon="CircleCheck" @click="handleDataScope(scope.row)" v-hasPermi="['system:role:edit']"></el-button>
-          </el-tooltip>
-          <el-tooltip content="分配用户" placement="top" v-if="scope.row.roleId !== 1">
-            <el-button link type="primary" icon="User" @click="handleAuthUser(scope.row)" v-hasPermi="['system:role:edit']"></el-button>
+          <el-tooltip content="回复" placement="top">
+            <el-button link type="primary" icon="Message" @click="handleReply(scope.row)"></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -121,15 +116,43 @@
 
     <!-- 新增或修改投诉配置对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="roleRef" :model="form" :rules="rules" label-width="100px">
+      <el-form ref="tousuRef" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="投诉标题" prop="tousuTitle">
-          <el-input v-model="form.roleName" placeholder="请输入投诉标题" />
+          <el-input v-model="form.tousuTitle" placeholder="请输入投诉标题" />
         </el-form-item>
-        <el-form-item label="投诉类型" prop="roleSort">
-          <el-input-number v-model="form.roleSort" controls-position="right" :min="0" />
+        <el-form-item label="投诉状态" prop="tousuState">
+          <el-select
+              v-model="form.tousuState"
+              placeholder="请输入处理状态"
+              clearable
+              style="width: 180px"
+          >
+            <el-option
+                v-for="dict in tousu_state_choose"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="投诉描述">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" :rows="10"></el-input>
+        <el-form-item label="投诉类型" prop="tousuType">
+          <el-select
+              v-model="form.tousuType"
+              placeholder="请输入投诉类型"
+              prop="tousuType"
+              clearable
+              style="width: 180px"
+          >
+            <el-option
+                v-for="dict in tousu_type_choose"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="投诉描述" prop="tousuMain">
+          <el-input v-model="form.tousuMain" type="textarea" placeholder="请输入内容" :rows="10"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -140,60 +163,81 @@
       </template>
     </el-dialog>
 
-    <!-- 分配角色数据权限对话框 -->
-    <el-dialog :title="title" v-model="openDataScope" width="500px" append-to-body>
-      <el-form :model="form" label-width="80px">
-        <el-form-item label="角色名称">
-          <el-input v-model="form.roleName" :disabled="true" />
+    <!-- 回复配置对话框 -->
+    <el-dialog :title="title" v-model="openReply" width="500px" append-to-body>
+      <el-form ref="tousuRef" :model="form" :rules="rules" label-width="100px">
+        <el-form-item label="投诉标题" prop="tousuTitle">
+          <el-input v-model="form.tousuTitle" placeholder="请输入投诉标题" />
         </el-form-item>
-        <el-form-item label="权限字符">
-          <el-input v-model="form.roleKey" :disabled="true" />
-        </el-form-item>
-        <el-form-item label="权限范围">
-          <el-select v-model="form.dataScope" @change="dataScopeSelectChange">
+        <el-form-item label="投诉状态" prop="tousuState">
+          <el-select
+              v-model="form.tousuState"
+              placeholder="请输入处理状态"
+              clearable
+              style="width: 180px"
+          >
             <el-option
-                v-for="item in dataScopeOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-            ></el-option>
+                v-for="dict in tousu_state_choose"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+            />
           </el-select>
         </el-form-item>
-        <el-form-item label="数据权限" v-show="form.dataScope == 2">
-          <el-checkbox v-model="deptExpand" @change="handleCheckedTreeExpand($event, 'dept')">展开/折叠</el-checkbox>
-          <el-checkbox v-model="deptNodeAll" @change="handleCheckedTreeNodeAll($event, 'dept')">全选/全不选</el-checkbox>
-          <el-checkbox v-model="form.deptCheckStrictly" @change="handleCheckedTreeConnect($event, 'dept')">父子联动</el-checkbox>
-          <el-tree
-              class="tree-border"
-              :data="deptOptions"
-              show-checkbox
-              default-expand-all
-              ref="deptRef"
-              node-key="id"
-              :check-strictly="!form.deptCheckStrictly"
-              empty-text="加载中，请稍候"
-              :props="{ label: 'label', children: 'children' }"
-          ></el-tree>
+        <el-form-item label="投诉类型" prop="tousuType">
+          <el-select
+              v-model="form.tousuType"
+              placeholder="请输入投诉类型"
+              prop="tousuType"
+              clearable
+              style="width: 180px"
+          >
+            <el-option
+                v-for="dict in tousu_type_choose"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="投诉描述" prop="tousuMain">
+          <el-input v-model="form.tousuMain" type="textarea" placeholder="请输入内容" :rows="10"></el-input>
+        </el-form-item>
+        <el-form-item label="投诉回复" prop="tousuReply">
+          <el-input v-model="form.tousuReply" type="textarea" placeholder="请输入内容" :rows="10"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitDataScope">确 定</el-button>
-          <el-button @click="cancelDataScope">取 消</el-button>
+          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">取 消</el-button>
         </div>
       </template>
     </el-dialog>
+
   </div>
 </template>
 
 <script setup name="Tousu">
-import { addRole, changeRoleStatus, dataScope, delRole, getRole, updateRole, deptTreeSelect } from "@/api/system/role";
-import { listTousu } from "@/api/tousu/tousu";
+import { changeRoleStatus, dataScope, getRole, deptTreeSelect } from "@/api/system/role";
+import { listTousu,updateTousu,addTousu,delTousu,getTousuBytousuId } from "@/api/tousu/tousu";
 import { roleMenuTreeselect, treeselect as menuTreeselect } from "@/api/system/menu";
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+const tousuStateDict = {
+  待回复: '待回复',
+  待处理: '待处理',
+  结束: '结束'
+};
+const tousuTypeDict = {
+  系统投诉: '系统投诉',
+  自习室投诉: '自习室投诉',
+  其他投诉: '其他投诉'
+};
+// const { sys_normal_disable } = proxy.useDict(tousuStateDict);
+const tousu_state_choose = Object.entries(tousuStateDict).map(([value, label]) => ({ value, label }));
+const tousu_type_choose = Object.entries(tousuTypeDict).map(([value, label]) => ({ value, label }));
 
 const tousuList = ref([]);
 const open = ref(false);
@@ -203,7 +247,7 @@ const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const title = ref("");
+const title = ref([]);
 const dateRange = ref([]);
 const menuOptions = ref([]);
 const menuExpand = ref(false);
@@ -212,6 +256,7 @@ const deptExpand = ref(true);
 const deptNodeAll = ref(false);
 const deptOptions = ref([]);
 const openDataScope = ref(false);
+const openReply= ref(false);
 const menuRef = ref(null);
 const deptRef = ref(null);
 
@@ -231,12 +276,13 @@ const data = reactive({
     pageSize: 10,
     tousuTitle: undefined,
     tousuType: undefined,
-    tousuState: undefined
+    tousuMain: undefined,
+    tousuReply: undefined
   },
   rules: {
-    roleName: [{ required: true, message: "角色名称不能为空", trigger: "blur" }],
-    roleKey: [{ required: true, message: "权限字符不能为空", trigger: "blur" }],
-    roleSort: [{ required: true, message: "角色顺序不能为空", trigger: "blur" }]
+    tousuTitle: [{ required: true, message: "标题不能为空", trigger: "blur" }],
+    tousuType: [{ required: true, message: "投诉类型不能为空", trigger: "blur" }],
+    tousuMain: [{ required: true, message: "投诉内容不能为空", trigger: "blur" }]
   },
 });
 
@@ -249,7 +295,9 @@ function getList() {
     tousuList.value = response.rows;
     total.value = response.total;
     loading.value = false;
+    console.log(response.rows)
   });
+
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -264,9 +312,10 @@ function resetQuery() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const roleIds = row.roleId || ids.value;
-  proxy.$modal.confirm('是否确认删除角色编号为"' + roleIds + '"的数据项?').then(function () {
-    return delRole(roleIds);
+  const tousuTitles = row.tousuTitle;
+  const tousuIds = row.tousuId;
+  proxy.$modal.confirm('是否确认删除投诉标题为"' + tousuTitles + '"的数据项?').then(function () {
+    return delTousu(tousuIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
@@ -337,50 +386,60 @@ function reset() {
   deptExpand.value = true;
   deptNodeAll.value = false;
   form.value = {
+    userId:undefined,
     tousuId: undefined,
     tousuTitle: undefined,
     tousuType: undefined,
     tousuState: undefined,
     tousuMain: undefined,
-    roleSort: 0,
-    status: "0",
+    tousuReply:undefined,
+    createBy:undefined,
+    tousuIds: [],
     menuIds: [],
     deptIds: [],
     menuCheckStrictly: true,
     deptCheckStrictly: true,
     remark: undefined
   };
-  proxy.resetForm("roleRef");
+  proxy.resetForm("tousuRef");
 }
-/** 添加角色 */
+/** 申请投诉 */
 function handleAdd() {
   reset();
-  getMenuTreeselect();
   open.value = true;
   title.value = "申请投诉";
 }
 /** 修改角色 */
 function handleUpdate(row) {
   reset();
-  const roleId = row.roleId || ids.value;
-  const roleMenu = getRoleMenuTreeselect(roleId);
-  getRole(roleId).then(response => {
-    form.value = response.data;
-    form.value.roleSort = Number(form.value.roleSort);
+  const tousuId = row.tousuId;
+  getTousuBytousuId(tousuId).then(response => {
+    form.value = response.data[0];
+    form.value.tousuType = response.data[0].tousuType.split(" ")[0];
+    form.value.tousuTitle = response.data[0].tousuTitle.split(" ")[0];
+    form.value.tousuMain = response.data[0].tousuMain.split(" ")[0];
     open.value = true;
-    nextTick(() => {
-      roleMenu.then((res) => {
-        let checkedKeys = res.checkedKeys;
-        checkedKeys.forEach((v) => {
-          nextTick(() => {
-            menuRef.value.setChecked(v, true, false);
-          });
-        });
-      });
-    });
-    title.value = "修改角色";
+    title.value = "修改投诉";
   });
 }
+
+function handleReply(row) {
+  reset();
+  const tousuId = row.tousuId;
+  getTousuBytousuId(tousuId).then(response => {
+    form.value = response.data[0];
+    form.value.tousuType = response.data[0].tousuType.split(" ")[0];
+    form.value.tousuTitle = response.data[0].tousuTitle.split(" ")[0];
+    form.value.tousuMain = response.data[0].tousuMain.split(" ")[0];
+    // form.value.tousuReply = response.data[0].tousuReply.split(" ")[0];
+    if (response.data[0] && response.data[0].tousuReply) {
+      form.value.tousuReply = response.data[0].tousuReply.split(" ")[0];
+    } else {}
+    openReply.value = true;
+    title.value = "回复投诉";
+  });
+}
+
 /** 根据角色ID查询菜单树结构 */
 function getRoleMenuTreeselect(roleId) {
   return roleMenuTreeselect(roleId).then(response => {
@@ -411,9 +470,9 @@ function handleCheckedTreeExpand(value, type) {
 }
 
 /** 所有菜单节点数据 */
-function getMenuAllCheckedKeys() {
+function getTousuAllCheckedIds() {
   // 目前被选中的菜单节点
-  let checkedKeys = menuRef.value.getCheckedKeys();
+  let checkedIds = menuRef.value.getCheckedKeys();
   // 半选中的菜单节点
   let halfCheckedKeys = menuRef.value.getHalfCheckedKeys();
   checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
@@ -421,20 +480,23 @@ function getMenuAllCheckedKeys() {
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["roleRef"].validate(valid => {
+  console.log("submitForm")
+  proxy.$refs["tousuRef"].validate(valid => {
     if (valid) {
       if (form.value.tousuId != undefined) {
-        form.value.menuIds = getMenuAllCheckedKeys();
-        updateRole(form.value).then(response => {
+        // form.value.tousuIds = getTousuAllCheckedIds();
+          updateTousu(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
+          openReply.value = false;
           getList();
         });
       } else {
-        form.value.menuIds = getMenuAllCheckedKeys();
-        addRole(form.value).then(response => {
+        // form.value.tousuIds = getTousuAllCheckedIds();
+        addTousu(form.value).then(response => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;
+          openReply.value = false;
           getList();
         });
       }
@@ -444,6 +506,7 @@ function submitForm() {
 /** 取消按钮 */
 function cancel() {
   open.value = false;
+  openReply.value = false;
   reset();
 }
 /** 选择角色权限范围触发 */
