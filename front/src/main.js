@@ -44,10 +44,8 @@ import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
 
-
-
-
 import * as echarts from 'echarts'
+
 
 const app = createApp(App)
 

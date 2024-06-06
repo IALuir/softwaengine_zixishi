@@ -37,6 +37,7 @@
     "vue-baidu-map-3x": "^1.0.35",
     "vue-bmap-gl": "^1.0.4",
     "vue-cropper": "1.1.1",
+    "vue-echarts": "^6.7.2",
     "vue-iframe": "^0.0.0",
     "vue-mapvgl": "^1.0.4",
     "vue-router": "4.2.5"
@@ -45,11 +46,14 @@
     "@vitejs/plugin-vue": "4.5.0",
     "@vue/compiler-sfc": "3.3.9",
     "@vuemap/unplugin-resolver": "^2.0.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
     "sass": "1.69.5",
     "unplugin-auto-import": "^0.17.1",
     "unplugin-vue-components": "^0.26.0",
     "unplugin-vue-setup-extend-plus": "1.0.0",
     "vite-plugin-compression": "0.5.1",
-    "vite-plugin-svg-icons": "2.0.1"
+    "vite-plugin-svg-icons": "2.0.1",
+    "webpack": "^3.6.0"
   }
 }
