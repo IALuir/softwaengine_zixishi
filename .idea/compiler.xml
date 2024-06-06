@@ -6,12 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ruoyi-common" />
-        <module name="ruoyi-framework" />
-        <module name="ruoyi-generator" />
-        <module name="ruoyi-system" />
-        <module name="ruoyi-quartz" />
-        <module name="ruoyi-admin" />
+        <module name="zixishi-admin" />
+        <module name="zixishi-framework" />
+        <module name="zixishi-generator" />
+        <module name="zixishi-common" />
+        <module name="zixishi-system" />
+        <module name="zixishi-quartz" />
       </profile>
     </annotationProcessing>
   </component>

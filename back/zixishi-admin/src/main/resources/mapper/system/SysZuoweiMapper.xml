@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zixishi.system.mapper.SysZuoweiMapper">
+
+    <resultMap type="SysZuowei" id="SysZuoweiResult">
+        <result property="zuoweiId"    column="zuowei_id"    />
+        <result property="zuoweiNumber"    column="zuowei_number"    />
+        <result property="zuoweiState"    column="zuowei_state"    />
+    </resultMap>
+
+    <sql id="selectSysZuoweiVo">
+        select zuowei_id, zuowei_number, zuowei_state from sys_zuowei
+    </sql>
+
+    <select id="selectSysZuoweiList" parameterType="SysZuowei" resultMap="SysZuoweiResult">
+        <include refid="selectSysZuoweiVo"/>
+        <where>
+            <if test="zuoweiId != null  and zuoweiId != ''"> and zuowei_id = #{zuoweiId}</if>
+            <if test="zuoweiNumber != null "> and zuowei_number = #{zuoweiNumber}</if>
+            <if test="zuoweiState != null "> and zuowei_state = #{zuoweiState}</if>
+        </where>
+    </select>
+
+    <select id="selectSysZuoweiByZuoweiId" parameterType="String" resultMap="SysZuoweiResult">
+        <include refid="selectSysZuoweiVo"/>
+        where zuowei_id = #{zuoweiId}
+    </select>
+
+    <insert id="insertSysZuowei" parameterType="SysZuowei">
+        insert into sys_zuowei
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="zuoweiId != null and zuoweiId != ''">zuowei_id,</if>
+            <if test="zuoweiNumber != null">zuowei_number,</if>
+            <if test="zuoweiState != null">zuowei_state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="zuoweiId != null and zuoweiId != ''">#{zuoweiId},</if>
+            <if test="zuoweiNumber != null">#{zuoweiNumber},</if>
+            <if test="zuoweiState != null">#{zuoweiState},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysZuowei" parameterType="SysZuowei">
+        update sys_zuowei
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zuoweiNumber != null">zuowei_number = #{zuoweiNumber},</if>
+            <if test="zuoweiState != null">zuowei_state = #{zuoweiState},</if>
+        </trim>
+        where zuowei_id = #{zuoweiId}
+    </update>
+
+    <delete id="deleteSysZuoweiByZuoweiId" parameterType="String">
+        delete from sys_zuowei where zuowei_id = #{zuoweiId}
+    </delete>
+
+    <delete id="deleteSysZuoweiByZuoweiIds" parameterType="String">
+        delete from sys_zuowei where zuowei_id in
+        <foreach item="zuoweiId" collection="array" open="(" separator="," close=")">
+            #{zuoweiId}
+        </foreach>
+    </delete>
+</mapper>
