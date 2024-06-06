@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zixishi.system.mapper.SysYuyueMapper">
+
+    <resultMap type="SysYuyue" id="SysYuyueResult">
+        <id     property="yuyueId"             column="yuyue_id"               />
+        <result property="userId"           column="user_id"             />
+        <result property="userName"           column="user_name"             />
+        <result property="zuoweiId"            column="zuowei_id"              />
+        <result property="yuyueTime"           column="yuyueTime"             />
+        <result property="deTime"           column="deTime"             />
+        <result property="cTime"          column="cTime"            />
+        <result property="is_del"          column="is_del"            />
+        <result property="state"          column="qiandao_state"            />
+    </resultMap>
+
+    <resultMap type="SysZuowei" id="SysZuoweiResult">
+        <id     property="zuoweiId"             column="zuowei_id"               />
+        <result property="yuyueId"           column="yuyue_id"             />
+        <result property="zuoweiNumber"           column="zuowei_number"             />
+        <result property="zuoweiState"            column="zuowei_state"              />
+    </resultMap>
+
+    <resultMap type="SysQiandao" id="SysQiandaoResult">
+        <id     property="qiandaoId"             column="qiandao_id"               />
+        <result property="yuyueId"           column="yuyue_id"             />
+        <result property="qiandaoTime"           column="qiandaoTime"             />
+        <result property="qiantuiTime"            column="qiantuiTime"              />
+        <result property="state"            column="qiandao_state"              />
+    </resultMap>
+
+    <sql id="selectYuyueVo">
+        select distinct y.yuyue_id,y.user_id,y.zuowei_id,y.yuyueTime,y.deTime,y.cTime,y.is_del,u.user_name,u.email,u.phonenumber,q.qiandaoTime,q.qiantuiTime,q.qiandao_state
+        from sys_yuyue y
+                 left join sys_user u on u.user_id = y.user_id
+                 left join sys_qiandao q on q.yuyue_id = y.yuyue_id
+    </sql>
+
+    <sql id="selectZuoweiVo">
+        select distinct z.zuowei_id,z.zuowei_number,z.zuowei_state,y.yuyueTime,y.deTime,y.cTime,u.user_name,u.email,u.phonenumber
+        from sys_zuowei z
+                 left join sys_yuyue y on y.zuowei_id = z.zuowei_id
+                 left join sys_user u on u.user_id = y.user_id
+    </sql>
+
+    <sql id="selectQiandaoiVo">
+        select distinct *
+        from sys_qiandao q
+                 left join sys_yuyue y on y.yuyue_id = q.yuyue_id
+                 left join sys_user u on u.user_id = y.user_id
+    </sql>
+
+    <select id="selectYuyueList" parameterType="SysYuyue" resultMap="SysYuyueResult">
+        <include refid="selectYuyueVo"/>
+        WHERE y.is_del != 1 AND y.user_id = #{userId}
+        <if test="yuyueLeftTime != null and yuyueRightTime != null">
+            AND y.yuyueTime > #{yuyueLeftTime} AND #{yuyueRightTime} > y.yuyueTime
+        </if>
+        <if test="cLeftTime != null and cRightTime != null">
+            AND y.cTime > #{cLeftTime} AND #{cRightTime} > y.cTime
+        </if>
+    </select>
+
+    <select id="selectYuyueByYuyueId" parameterType="SysYuyue" resultMap="SysYuyueResult">
+        <include refid="selectYuyueVo"/>
+        where y.yuyue_id = #{yuyueId}
+    </select>
+
+    <select id="selectYuyueByZuoweiId" parameterType="SysYuyue" resultMap="SysYuyueResult">
+        <include refid="selectYuyueVo"/>
+        where y.zuowei_id = #{zuoweiId} AND y.is_del = 0
+    </select>
+
+    <select id="selectZuoweiByZuoweiId" parameterType="SysZuowei" resultMap="SysZuoweiResult">
+        <include refid="selectZuoweiVo"/>
+        where z.zuowei_id = #{zuoweiId}
+    </select>
+
+    <select id="selectYuyueNumberByUserId" parameterType="SysYuyue" resultMap="SysYuyueResult">
+        select *
+            from sys_yuyue y
+            left join sys_user u on u.user_id = y.user_id
+            where y.user_id = #{userId} AND y.is_del = 0
+    </select>
+
+
+    <update id="updatetYuyue" parameterType="SysYuyue">
+        update sys_yuyue
+        <set>
+            zuowei_id = #{zuoweiId},
+            yuyueTime = #{yuyueTime},
+            deTime = #{deTime},
+            cTime = #{cTime},
+            is_del = #{is_del}
+        </set>
+        where sys_yuyue.yuyue_id = #{yuyueId}
+    </update>
+
+    <insert id="insertYuyue" parameterType="SysYuyue" useGeneratedKeys="true" keyProperty="yuyueId">
+        insert into sys_yuyue(
+        user_id,
+        zuowei_id,
+        yuyueTime,
+        deTime,
+        cTime
+        )values(
+        #{userId},
+        #{zuoweiId},
+        #{yuyueTime},
+        #{deTime},
+        sysdate()
+        )
+    </insert>
+
+    <delete id="deleteYuyueByYuyueIds" parameterType="Long">
+        update sys_yuyue set is_del = '1' where yuyue_id in
+        <foreach collection="array" item="yuyueId" open="(" separator="," close=")">
+            #{yuyueId}
+        </foreach>
+    </delete>
+
+    <insert id="insertQiandao" parameterType="SysQiandao" useGeneratedKeys="true" keyProperty="qiandaoId">
+        insert into sys_qiandao(
+            yuyue_id,
+            qiandaoTime,
+            qiantuiTime,
+            qiandao_state
+        )values(
+            #{yuyueId},
+            #{qiandaoTime},
+            #{qiantuiTime},
+            #{state}
+        )
+    </insert>
+
+    <select id="selectQiandaoByYuyueId" parameterType="SysQiandao" resultMap="SysQiandaoResult">
+        <include refid="selectQiandaoiVo"/>
+        where y.yuyue_id = #{yuyueId}
+    </select>
+
+    <update id="updatetQiandao" parameterType="SysQiandao">
+        update sys_qiandao
+        <set>
+            yuyue_id = #{yuyueId},
+            qiandaoTime = #{qiandaoTime},
+            qiantuiTime = #{qiantuiTime},
+            qiandao_state = #{state}
+        </set>
+        where sys_qiandao.qiandao_id = #{qiandaoId}
+    </update>
+
+    <update id="AutozuoweiShifang" parameterType="SysQiandao">
+        update sys_qiandao
+        <set>
+            qiandao_state = #{state}
+        </set>
+        where sys_qiandao.qiandao_id = #{qiandaoId}
+    </update>
+
+    <select id="selectQiandaoAll" resultMap="SysQiandaoResult">
+        <include refid="selectQiandaoiVo"/>
+    </select>
+
+    <select id="selectYuyueAll" resultMap="SysYuyueResult">
+        <include refid="selectYuyueVo"/>
+    </select>
+
+
+</mapper>

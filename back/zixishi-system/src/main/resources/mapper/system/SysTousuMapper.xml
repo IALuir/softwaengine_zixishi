@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zixishi.system.mapper.SysTousuMapper">
+
+    <resultMap type="SysTousu" id="SysTousuResult">
+        <id     property="tousuId"             column="tousu_id"               />
+        <result property="userId"           column="user_id"             />
+        <result property="tousuTitle"           column="tousu_title"             />
+        <result property="tousuType"            column="tousu_type"              />
+        <result property="tousuState"           column="tousu_state"             />
+        <result property="tousuCreatetime"           column="tousu_createtime"             />
+        <result property="tousuMain"          column="tousu_main"            />
+        <result property="tousuReply"          column="tousu_reply"            />
+        <result property="createBy"          column="create_by"            />
+    </resultMap>
+
+    <sql id="selectTousuVo">
+        select distinct y.tousu_id,y.user_id,y.tousu_title,y.tousu_type,y.tousu_state,y.tousu_createtime,y.tousu_main,y.tousu_reply,y.create_by,u.user_name,u.email,u.phonenumber
+        from sys_tousu y
+                 left join sys_user u on u.user_id = y.user_id
+    </sql>
+
+    <select id="selectTousuList" parameterType="SysTousu" resultMap="SysTousuResult">
+        select distinct y.tousu_id,y.user_id,y.tousu_title,y.tousu_type,y.tousu_state,y.tousu_createtime,y.tousu_main,y.tousu_reply,y.create_by,u.user_name,u.email,u.phonenumber
+        from sys_tousu y left join sys_user u on u.user_id = y.user_id
+    </select>
+
+    <insert id="insertTousu" parameterType="SysTousu" useGeneratedKeys="true" keyProperty="tousuId">
+        insert into sys_tousu(
+            user_id,
+            tousu_title,
+            tousu_type,
+            tousu_main,
+            create_by,
+            tousu_createtime
+        )values(
+                   #{userId},
+                   #{tousuTitle},
+                   #{tousuType},
+                   #{tousuMain},
+                   #{createBy},
+                   sysdate()
+               )
+    </insert>
+
+    <delete id="deleteTousuById" parameterType="SysTousu">
+        delete from sys_tousu where tousu_id = #{tousuId}
+    </delete>
+
+    <select id="selectTousuByTousuId" parameterType="SysTousu" resultMap="SysTousuResult">
+        <include refid="selectTousuVo"/>
+        where y.tousu_id = #{tousuId}
+    </select>
+
+    <select id="selectTousuByUserId" parameterType="SysTousu" resultMap="SysTousuResult">
+        <include refid="selectTousuVo"/>
+        where y.user_id = #{userId}
+    </select>
+
+    <update id="updatetTousu" parameterType="SysTousu">
+        update sys_tousu
+        <set>
+            tousu_createtime = #{tousuCreatetime},
+            tousu_main = #{tousuMain},
+            tousu_title = #{tousuTitle},
+            tousu_state = #{tousuState},
+            tousu_type = #{tousuType},
+            tousu_reply = #{tousuReply}
+        </set>
+        where sys_tousu.tousu_id = #{tousuId}
+    </update>
+
+</mapper>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">
@@ -9,6 +10,10 @@
         <option value="$PROJECT_DIR$/back/ruoyi-common/pom.xml" />
         <option value="$PROJECT_DIR$/back/ruoyi-quartz/pom.xml" />
         <option value="$PROJECT_DIR$/back/ruoyi-framework/pom.xml" />
+        <option value="$PROJECT_DIR$/back/zixishi-quartz/pom.xml" />
+        <option value="$PROJECT_DIR$/back/zixishi-generator/pom.xml" />
+        <option value="$PROJECT_DIR$/back/zixishi-admin/pom.xml" />
+        <option value="$PROJECT_DIR$/back/pom.xml" />
       </list>
     </option>
   </component>
