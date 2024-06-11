@@ -183,17 +183,17 @@ export default {
         this.$modal.msgSuccess("超时签退，签退成功");
         this.state1 = false;
         this.state2 = true;
+        this.yuyueForm.is_del = 1;
+        getQiandaoByyuyueId(this.yuyueId).then(res => {
+          if(res.data.length){
+            updateQiandao(this.form);
+            updateYuyue(this.yuyueForm);
+          }
+          this.getzuowei();
+        })
       }else{
         this.$modal.msgError("不在签退时间内");
       }
-      this.yuyueForm.is_del = 1;
-      getQiandaoByyuyueId(this.yuyueId).then(res => {
-        if(res.data.length){
-          updateQiandao(this.form);
-          updateYuyue(this.yuyueForm);
-        }
-        this.getzuowei();
-      })
     },
     reset(){
       this.form = {
